@@ -1,4 +1,4 @@
-package Functionality;
+package functionality;
 
 public class Vehicle {
     
