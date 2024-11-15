@@ -1,4 +1,4 @@
-package com.swuber.package1;
+package package1;
 
 public class ShuttleRide {
     
