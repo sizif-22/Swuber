@@ -1,7 +1,7 @@
-package package1;
+package Functionality;
 
 public class Card {
-    private String cardName;
+    protected String cardName;
     private String cardNumber;
     private String expirationDate;
     private String cardHolderName;
@@ -16,7 +16,7 @@ public class Card {
     public String getCard() {
         String last4Digits = cardNumber.substring(cardNumber.length() - 4);
         return cardName + "***" + last4Digits;
-       
     }
+
     
 }

@@ -1,4 +1,4 @@
-package package1;
+package Functionality;
 
 public class Ride {
     
