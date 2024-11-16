@@ -1,171 +1,125 @@
 package functionality;
 
+import java.util.Random;
+
 public class Ride {
-    private String rideID;
-    private User user;
-    private Driver driver;
-    private Vehicle vehicle;
-    private String startLocation;
-    private String endLocation;
-    private double cost;
-    private String status;
-    private boolean isShuttle;
-    private double waitFreeRate;
-    private Payment payment;
 
-    // Constructor
-    public Ride(String rideID, User user, Driver driver, Vehicle vehicle, 
-                String startLocation, String endLocation) {
-        this.rideID = rideID;
-        this.user = user;
-        this.driver = driver;
-        this.vehicle = vehicle;
-        this.startLocation = startLocation;
-        this.endLocation = endLocation;
-        this.status = "PENDING";
-        this.isShuttle = false;
-        this.waitFreeRate = 0.0;
-        this.cost = 0.0;
-    }
+	// el mafrood da yb2a enum (mksl)
+	public static final String STATUS_PENDING = "PENDING";
+	public static final String STATUS_ACCEPTED = "ACCEPTED";
+	public static final String STATUS_PAID = "PAID";
+	public static final String STATUS_COMPLETED = "COMPLETED";
 
-    // Request a ride
-    public void requestRide(String startLocation, String endLocation, boolean isShuttle) {
-        this.startLocation = startLocation;
-        this.endLocation = endLocation;
-        this.isShuttle = isShuttle;
-        this.status = "REQUESTED";
-    }
+	private static int rideIDGen = 0;
+	private int rideID;
+	private User user;
+	private Driver driver;
+	private Vehicle vehicle;
+	private String startLocation;
+	private String endLocation;
+	private double cost;
+	private String status;
+	private boolean isShuttle;
+	private Payment payment;
+	private float rating;
 
-    // Calculate the cost of the ride
-    public double calculateCost(String startLocation, String endLocation, boolean isShuttle) {
-        // Basic distance-based calculation (simplified example)
-        double baseCost = calculateDistanceCost(startLocation, endLocation);
-        
-        if (isShuttle) {
-            // Apply shuttle discount
-            baseCost *= 0.8;
-        }
-        
-        this.cost = baseCost;
-        return this.cost;
-    }
+	public Ride( User user, String startLocation, String endLocation) {
+		this.rideID = rideIDGen + 1;
+		this.user = user;
+		this.startLocation = startLocation;
+		this.endLocation = endLocation;
+		this.status = STATUS_PENDING;
+		this.isShuttle = false;
+		this.cost = calculateCost();
+	}
 
-    // Helper method to calculate distance-based cost
-    private double calculateDistanceCost(String startLocation, String endLocation) {
-        // Simplified distance calculation - in real implementation, 
-        // would use actual geocoding and distance calculation
-        return 10.0; // Base fare for example
-    }
+	private double calculateCost() {
+		return isShuttle ? 80.0 : 50 + new Random().nextDouble() * 150;
+	}
 
-    // Add wait-free time (premium feature)
-    public double addWaitFreeTime(int minutes) {
-        double ratePerMinute = 0.5; // Example rate
-        this.waitFreeRate = minutes * ratePerMinute;
-        this.cost += this.waitFreeRate;
-        return this.waitFreeRate;
-    }
+	public boolean requestRide(RidePlanner planner) {
+		Driver matchedDriver = planner.matchDriverToRide(this);
+		if (matchedDriver != null) {
+				this.driver = matchedDriver;
+				this.vehicle = matchedDriver.getVehicle();
+				this.status = "ACCEPTED";
+				planner.addRide(this);
+				return true;
+		}
+		this.status = "PENDING";
+		return false;
+}
 
-    // Update ride status
-    public void updateRideStatus(String status) {
-        this.status = status;
-    }
+	public boolean processPayment(Payment payment, String discountCode) {
+		if (payment != null && payment.processPayment(discountCode)) {
+			this.payment = payment;
+			this.status = STATUS_PAID;
+			return true;
+		}
+		return false;
+	}
 
-    // Process payment for the ride
-    public boolean processPayment(Payment payment) {
-        if (payment != null && payment.processPayment()) {
-            this.payment = payment;
-            this.status = "PAID";
-            return true;
-        }
-        return false;
-    }
+	public void completeRide() {
+		if (this.status.equals(STATUS_PAID)) {
+			this.status = STATUS_COMPLETED;
+		}
+	}
 
-    // Complete the ride
-    public void completeRide() {
-        if (this.status.equals("PAID")) {
-            this.status = "COMPLETED";
-            this.driver.markRideAsComplete(this);
-        }
-    }
+	public void rateRide(float rating) {
+		if (rating >= 0 && rating <= 5) {
+				this.rating = rating;
+		}
+}
 
-    // Getters and Setters
-    public String getRideID() {
-        return rideID;
-    }
+public float getRating() {
+		return this.rating;
+}
 
-    public User getUser() {
-        return user;
-    }
+	public int getRideID() {
+		return rideID;
+	}
 
-    public Driver getDriver() {
-        return driver;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
+	public Driver getDriver() {
+		return driver;
+	}
 
-    public String getStartLocation() {
-        return startLocation;
-    }
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
 
-    public String getEndLocation() {
-        return endLocation;
-    }
+	public String getStartLocation() {
+		return startLocation;
+	}
 
-    public double getCost() {
-        return cost;
-    }
+	public String getEndLocation() {
+		return endLocation;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public double getCost() {
+		return cost;
+	}
 
-    public boolean isShuttle() {
-        return isShuttle;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public double getWaitFreeRate() {
-        return waitFreeRate;
-    }
+	public boolean isShuttle() {
+		return isShuttle;
+	}
 
-    public Payment getPayment() {
-        return payment;
-    }
+	public Payment getPayment() {
+		return payment;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    public void setStartLocation(String startLocation) {
-        this.startLocation = startLocation;
-    }
-
-    public void setEndLocation(String endLocation) {
-        this.endLocation = endLocation;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-    public void setShuttle(boolean shuttle) {
-        isShuttle = shuttle;
-    }
-
-    public void setWaitFreeRate(double waitFreeRate) {
-        this.waitFreeRate = waitFreeRate;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
 }

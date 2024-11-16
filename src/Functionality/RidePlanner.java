@@ -4,45 +4,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RidePlanner {
-    private List<Ride> availableRides;
+	private List<Ride> activeRides;
+	private List<Driver> allDrivers;
 
-    public List<Driver> getAvailableDrivers(String start) {
-        List<Driver> drivers = new ArrayList<>();
-        for (Driver driver : Driver.getAllDrivers()) {
-            if (driver.isAvailable() && driver.getLocation().equalsIgnoreCase(start)) {
-                drivers.add(driver);
-            }
-        }
-        return drivers;
-    }
+	public RidePlanner() {
+		this.activeRides = new ArrayList<>();
+		this.allDrivers = new ArrayList<>();
+	}
 
-    public List<ShuttleRide> getScheduledShuttles(String startLocation, String destination) {
-        List<ShuttleRide> scheduledShuttles = new ArrayList<>();
-        for (Ride ride : availableRides) {
-            if (ride instanceof ShuttleRide) {
-                ShuttleRide shuttle = (ShuttleRide) ride;
-                if (shuttle.route.contains(startLocation) && shuttle.route.contains(destination)) {
-                    scheduledShuttles.add(shuttle);
-                }
-            }
-        }
-        return scheduledShuttles;
-    }
+	public void addDriver(Driver driver) {
+		allDrivers.add(driver);
+	}
 
-    public void estimateArrivalTime(String startLocation, String endLocation) {
-        // Implementation for estimating arrival time
-    }
+	public List<Driver> getAvailableDrivers(String location) {
+		List<Driver> availableDrivers = new ArrayList<>();
+		for (Driver driver : allDrivers) {
+			if (driver.isAvailable() && driver.getCurrentLocation().equals(location)) {
+				availableDrivers.add(driver);
+			}
+		}
+		return availableDrivers;
+	}
 
-    public void scheduleRide(String startLocation, String endLocation, String user, String time) {
-        // Implementation for scheduling a ride
-    }
+	public Driver matchDriverToRide(Ride ride) {
+		List<Driver> availableDrivers = getAvailableDrivers(ride.getStartLocation());
+		if (!availableDrivers.isEmpty()) {
+			Driver matchedDriver = availableDrivers.get(0);
+			matchedDriver.setAvailable(false);
+			return matchedDriver;
+		}
+		return null;
+	}
 
-    public Driver matchDriverToRide(Ride ride) {
-        for (Driver driver : Driver.getAllDrivers()) {
-            if (driver.isAvailable()) {
-                return driver;
-            }
-        }
-        return null;
-    }
+	public void addRide(Ride ride) {
+		activeRides.add(ride);
+	}
+
+	public void completeRide(Ride ride) {
+		activeRides.remove(ride);
+		ride.getDriver().setAvailable(true);
+	}
 }

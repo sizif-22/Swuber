@@ -4,78 +4,102 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Driver {
-	private String name;
-	private String location;
-	private boolean isAvailable;
-	private RideHistory rideHistory;
-	private int completedRides;
-	private Vehicle vehicle;
-	private static List<Driver> allDrivers = new ArrayList<>();
+    private String name;
+    private String location;
+    private RideHistory rideHistory;
+    private int completedRides;
+    private Vehicle vehicle;
+    private static List<Driver> allDrivers = new ArrayList<>();
+    private float rating;
+    private boolean isAvailable;
 
-	public Driver(String name, String location, boolean isAvailable) {
-		this.name = name;
-		this.location = location;
-		this.isAvailable = isAvailable;
-		allDrivers.add(this);
-	}
+    public Driver(String name, String location, Vehicle vehicle) {
+        this.name = name;
+        this.location = location;
+        this.vehicle = vehicle;
+        this.completedRides = 0;
+        this.rating = 5.0f; 
+        this.isAvailable = true;
+        this.rideHistory = new RideHistory();
+        allDrivers.add(this);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public float calculateRating() {
+        List<Ride> pastRides = rideHistory.getRides(); 
+        if (pastRides.isEmpty()) {
+            return 5.0f; 
+        }
 
-	public String getLocation() {
-		return location;
-	}
+        float totalRating = 0;
+        int ratedRides = 0;
 
-	public boolean isAvailable() {
-		return isAvailable;
-	}
+        for (Ride ride : pastRides) {
+            float rideRating = ride.getRating(); 
+            if (rideRating >= 0) { 
+                totalRating += rideRating;
+                ratedRides++;
+            }
+        }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+        this.rating = (ratedRides > 0) ? totalRating / ratedRides : 5.0f;
+        return this.rating;
+    }
 
-	public void setAvailable(boolean available) {
-		isAvailable = available;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public static List<Driver> getAllDrivers() {
-		return allDrivers;
-	}
+    public String getCurrentLocation() {
+        return location;
+    }
 
-	public RideHistory getRideHistory() {
-		return rideHistory;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	public Vehicle getVehicle() {
-		return vehicle;
-	}
+    public static List<Driver> getAllDrivers() {
+        return allDrivers;
+    }
 
-	/**
-	 * Update driver profile with completed ride information
-	 * 
-	 * @param rideID      The ID of the completed ride
-	 * @param vehicleInfo The vehicle information used for the ride
-	 */
-	private void updateDriverProfile(String rideID, String vehicleInfo) {
-		// In a real implementation, this might:
-		// 1. Update driver statistics
-		// 2. Log completion time
-		// 3. Update availability status
-		// 4. Trigger notifications
-		// 5. Update earning calculations
-	}
+    public RideHistory getRideHistory() {
+        return rideHistory;
+    }
 
-	public void markRideAsComplete(Ride ride) {
-		if (ride != null && ride.getStatus().equals("COMPLETED")) {
-			// Increment completed rides counter
-			this.completedRides++;
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
 
-			// Add to ride history
-			this.rideHistory.addRideToHistory(ride);
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
 
-			// Update driver's profile info
-			updateDriverProfile(ride.getRideID(), ride.getVehicle().getVehicleInfo());
-		}
-	}
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void updateRating(float newRating) {
+        if (newRating >= 0 && newRating <= 5) {
+            this.rating = (this.rating * completedRides + newRating) / (completedRides + 1);
+        }
+    }
+
+    public void markRideAsComplete(Ride ride) {
+        if (ride != null && ride.getStatus().equals("PAID")) {
+            this.completedRides++;
+            this.rideHistory.addRide(ride);
+            setAvailable(true);
+        }
+    }
+
+    public int getCompletedRides() {
+        return completedRides;
+    }
 }

@@ -24,6 +24,12 @@ public class User {
 		this.savedPaymentOptions = new ArrayList<>();
 	}
 
+	public void addRideToHistory(Ride ride) {
+		if (ride != null && "COMPLETED".equals(ride.getStatus())) {
+			this.rideHistory.addRide(ride);
+		}
+	}
+
 	public String getName() {
 		return this.name;
 	}
