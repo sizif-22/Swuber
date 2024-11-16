@@ -35,10 +35,6 @@ public class ShuttleRide extends Ride {
         }
     }
 
-    public void updateShuttleRoute(String location) {
-        this.route = location;
-    }
-
     public List<User> getPassengers() {
         return new ArrayList<>(passengers);
     }

@@ -5,33 +5,36 @@ public class Vehicle {
   private String color;
   private String vehicleOption;
   private String licenseNo;
-  private int maxPassengers;
-  private int currentPassengers;
+  // private int maxPassengers;
+  // private int currentPassengers;
 
   public Vehicle(String vehicleModel, String color, String vehicleOption, String licenseNo, int maxPassengers) {
     this.vehicleModel = vehicleModel;
     this.color = color;
     this.vehicleOption = vehicleOption;
     this.licenseNo = licenseNo;
-    this.maxPassengers = maxPassengers;
-    this.currentPassengers = 0;
+    // this.maxPassengers = maxPassengers;
+    // this.currentPassengers = 0;
   }
 
-  public boolean canAddPassengers(int count) {
-    return currentPassengers + count <= maxPassengers;
-  }
+  // public boolean canAddPassengers(int count) {
+  //   return currentPassengers + count <= maxPassengers;
+  // }
 
-  public boolean addPassengers(int count) {
-    if (canAddPassengers(count)) {
-      currentPassengers += count;
-      return true;
-    }
-    return false;
-  }
+  // public boolean addPassengers(int count) {
+  //   if (canAddPassengers(count)) {
+  //     currentPassengers += count;
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
-  public void removePassengers(int count) {
-    currentPassengers = Math.max(0, currentPassengers - count);
-  }
+  // public void removePassengers(int count) {
+  //   currentPassengers = Math.max(0, currentPassengers - count);
+  // }
+
+//IMPORTANT NOTE:
+  // Ahmed:: THESE ARE COMMENTED OUT BECAUSE WE SHOULD HAVE A SHUTTLE VEHICLE SUBCLASS / CHILD CLASS OF THIS CLASS WHICH HAS THOSE FEATURES.
 
   public String getVehicleModel() {
     return vehicleModel;
@@ -65,19 +68,19 @@ public class Vehicle {
     this.licenseNo = licenseNo;
   }
 
-  public int getMaxPassengers() {
-    return maxPassengers;
-  }
+  // public int getMaxPassengers() {
+  //   return maxPassengers;
+  // }
 
-  public void setMaxPassengers(int maxPassengers) {
-    this.maxPassengers = maxPassengers;
-  }
+  // public void setMaxPassengers(int maxPassengers) {
+  //   this.maxPassengers = maxPassengers;
+  // }
 
-  public int getCurrentPassengers() {
-    return currentPassengers;
-  }
+  // public int getCurrentPassengers() {
+  //   return currentPassengers;
+  // }
 
-  public int getAvailableSeats() {
-    return maxPassengers - currentPassengers;
-  }
+  // public int getAvailableSeats() {
+  //   return maxPassengers - currentPassengers;
+  // }
 }
