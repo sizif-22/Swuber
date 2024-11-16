@@ -1,13 +1,7 @@
 package main;
 
 import java.util.List;
-import functionality.Card;
-import functionality.Driver;
-import functionality.Payment;
-import functionality.Ride;
-import functionality.RidePlanner;
-import functionality.User;
-import functionality.Vehicle;
+import functionality.*;
 
 public class App {
     public static void main(String[] args) {
