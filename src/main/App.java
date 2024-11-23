@@ -2,7 +2,7 @@ package main;
 
 import java.util.List;
 
-import fun.*;
+import functionality.*;
 
 public class App {
 	public static void main(String[] args) {
