@@ -8,7 +8,7 @@ public class Vehicle {
   // private int maxPassengers;
   // private int currentPassengers;
 
-  public Vehicle(String vehicleModel, String color, String vehicleOption, String licenseNo, int maxPassengers) {
+  public Vehicle(String vehicleModel, String color, String vehicleOption, String licenseNo) {
     this.vehicleModel = vehicleModel;
     this.color = color;
     this.vehicleOption = vehicleOption;

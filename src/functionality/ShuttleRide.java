@@ -59,15 +59,6 @@ public class ShuttleRide extends Ride {
         this.shuttleArrivalTime = shuttleArrivalTime;
     }
 
-    @Override
-    public boolean requestRide(RidePlanner planner) {
-        boolean success = super.requestRide(planner);
-        if (success) {
-            this.shuttleArrivalTime = calculateEstimatedArrivalTime();
-        }
-        return success;
-    }
-
     private String calculateEstimatedArrivalTime() {
         return "15 Min"; // placeholder idk how we'd calculcate this so lets leave it static
     }
