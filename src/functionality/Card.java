@@ -1,4 +1,4 @@
-package fun;
+package functionality;
 
 public class Card {
 	protected String cardName;

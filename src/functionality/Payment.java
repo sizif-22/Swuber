@@ -1,4 +1,4 @@
-package fun;
+package functionality;
 
 public class Payment {
 	private Ride ride;

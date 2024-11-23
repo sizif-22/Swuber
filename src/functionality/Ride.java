@@ -1,4 +1,4 @@
-package fun;
+package functionality;
 
 import java.util.Random;
 import java.util.Date;

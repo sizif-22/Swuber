@@ -1,4 +1,4 @@
-package fun;
+package functionality;
 
 public class Vehicle {
   private String vehicleModel;
