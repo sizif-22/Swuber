@@ -1,6 +1,7 @@
-package functionality;
+package fun;
 
 import java.util.Random;
+import java.util.Date;
 
 public class Ride {
 
@@ -22,6 +23,7 @@ public class Ride {
 	private boolean isShuttle;
 	private Payment payment;
 	private float rating;
+	private Date rideDate;
 
 	public Ride( User user, String startLocation, String endLocation) {
 		this.rideID = rideIDGen + 1;
@@ -31,24 +33,12 @@ public class Ride {
 		this.status = STATUS_PENDING;
 		this.isShuttle = false;
 		this.cost = calculateCost();
+		this.rideDate = new Date();
 	}
 
 	private double calculateCost() {
 		return isShuttle ? 80.0 : 50 + new Random().nextDouble() * 150;
 	}
-
-	public boolean requestRide(RidePlanner planner) {
-		Driver matchedDriver = planner.matchDriverToRide(this);
-		if (matchedDriver != null) {
-				this.driver = matchedDriver;
-				this.vehicle = matchedDriver.getVehicle();
-				this.status = "ACCEPTED";
-				planner.addRide(this);
-				return true;
-		}
-		this.status = "PENDING";
-		return false;
-}
 
 	public boolean processPayment(Payment payment, String discountCode) {
 		if (payment != null && payment.processPayment(discountCode)) {
@@ -113,6 +103,14 @@ public float getRating() {
 
 	public Payment getPayment() {
 		return payment;
+	}
+
+	public void setDriver(Driver driver){
+		this.driver = driver;
+	}
+	
+	public void setVehicle(Vehicle vehicle){
+		this.vehicle= vehicle;
 	}
 
 	public void setStatus(String status) {

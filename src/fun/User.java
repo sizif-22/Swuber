@@ -1,4 +1,4 @@
-package functionality;
+package fun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,19 @@ public class User {
 		this.rideHistory = new RideHistory();
 		this.savedPaymentOptions = new ArrayList<>();
 	}
+
+	public Ride requestRide(RidePlanner planner, String startLocation, String destination) {
+		Ride ride = new Ride(this, startLocation, destination);
+		Driver matchedDriver = planner.matchDriverToRide(ride);
+		if (matchedDriver != null) {
+				ride.setDriver(matchedDriver);
+				ride.setVehicle(matchedDriver.getVehicle()) ;
+				ride.setStatus("ACCEPTED");
+				planner.addRide(ride);
+		}
+		ride.setStatus("PENDING") ;
+		return ride;
+} //A: no error handling here if no matched driver - this will cause runtime errors
 
 	public void addRideToHistory(Ride ride) {
 		if (ride != null && "COMPLETED".equals(ride.getStatus())) {

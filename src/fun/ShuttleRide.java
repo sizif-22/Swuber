@@ -1,4 +1,4 @@
-package functionality;
+package fun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +35,6 @@ public class ShuttleRide extends Ride {
         }
     }
 
-    public void updateShuttleRoute(String location) {
-        this.route = location;
-    }
-
     public List<User> getPassengers() {
         return new ArrayList<>(passengers);
     }
@@ -61,15 +57,6 @@ public class ShuttleRide extends Ride {
 
     public void setShuttleArrivalTime(String shuttleArrivalTime) {
         this.shuttleArrivalTime = shuttleArrivalTime;
-    }
-
-    @Override
-    public boolean requestRide(RidePlanner planner) {
-        boolean success = super.requestRide(planner);
-        if (success) {
-            this.shuttleArrivalTime = calculateEstimatedArrivalTime();
-        }
-        return success;
     }
 
     private String calculateEstimatedArrivalTime() {

@@ -1,4 +1,4 @@
-package functionality;
+package fun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,17 @@ public class RidePlanner {
 		return availableDrivers;
 	}
 
-	public Driver matchDriverToRide(Ride ride) {
+	// public Driver matchDriverToRide(Ride ride) {
+	// 	List<Driver> availableDrivers = getAvailableDrivers(ride.getStartLocation());
+	// 	if (!availableDrivers.isEmpty()) {
+	// 		Driver matchedDriver = availableDrivers.get(0);
+	// 		matchedDriver.setAvailable(false);
+	// 		return matchedDriver;
+	// 	}
+	// 	return null;
+	// }
+
+		public Driver matchDriverToRide(Ride ride) {
 		List<Driver> availableDrivers = getAvailableDrivers(ride.getStartLocation());
 		if (!availableDrivers.isEmpty()) {
 			Driver matchedDriver = availableDrivers.get(0);

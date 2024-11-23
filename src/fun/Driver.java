@@ -1,4 +1,4 @@
-package functionality;
+package fun;
 
 import java.util.ArrayList;
 import java.util.List;
