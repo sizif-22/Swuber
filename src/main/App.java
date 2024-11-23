@@ -1,7 +1,7 @@
 package main;
 
 import java.util.List;
-
+import java.util.Scanner;
 import functionality.*;
 
 public class App {
@@ -51,44 +51,63 @@ public class App {
 			System.out.println(driver.getName() + ": " + driver.calculateRating());
 		}
 
-		processRide(planner, user1, driver1, "downtown", "uptown");
+		processRide(planner, user1, driver1, "Downtown", "Uptown");
 
 	}
 
 	private static void processRide(RidePlanner planner, User user, Driver driver, String startLocation,
 			String endLocation) {
-		System.out.println("\nnew ride from " + startLocation + " to " + endLocation);
+		System.out.println("\nNew ride from " + startLocation + " to " + endLocation);
 
 		Ride ride = user.requestRide(planner, startLocation, endLocation);
 
-		System.out.println("Ride Cost: $" + String.format("%.2f", ride.getCost()));
-
-		boolean rideRequested = false;
-		if (ride != null) {
-			rideRequested = true;
+		if (ride == null || ride.getDriver() == null) {
+			System.out.println("No drivers currently available in this location");
+			return;
 		}
 
-		if (rideRequested) {
-			System.out.println("Ride accepted by: " + ride.getDriver().getName());
-			// simulation - there should be a wait time here
-			Card card = new Card("Visa", "4111111111111111", "12/25", user.getName());
-			Payment payment = new Payment(ride, user, card, ride.getCost());
-			boolean paymentSuccess = ride.processPayment(payment, null);
+		System.out.println("Ride Cost: $" + String.format("%.2f", ride.getCost()));
+		System.out.println("Ride accepted by: " + ride.getDriver().getName());
 
-			float rating = 4.5f; // static rating, should use scanner but useless since we're migrating to GUI
-														// anyway
+		// simulate payment and ride completion
+		Card card = new Card("Visa", "4111111111111111", "12/25", user.getName());
+		Payment payment = new Payment(ride, user, card, ride.getCost());
+		boolean paymentSuccess = ride.processPayment(payment, null);
 
-			if (paymentSuccess) {
-				System.out.println("Payment processed successfully");
-				driver.markRideAsComplete(ride); // also adds the ride to driver history
-				user.addRideToHistory(ride);
-				planner.completeRide(ride);
+		if (paymentSuccess) {
+			System.out.println("Payment processed successfully");
+			driver.markRideAsComplete(ride);
+			user.addRideToHistory(ride);
+			planner.completeRide(ride);
+
+			// Get ride rating from user - scanner
+			Scanner scanner = new Scanner(System.in);
+			try {
+				float rating = -1;
+				while (rating < 0 || rating > 5) {
+					System.out.print("Please rate your ride (0.0 to 5.0): ");
+					if (scanner.hasNextFloat()) {
+						rating = scanner.nextFloat();
+						if (rating < 0 || rating > 5) {
+							System.out.println("Invalid rating. Please enter a value between 0.0 and 5.0.");
+						}
+					} else {
+						System.out.println("Invalid input. Please enter a numeric value.");
+						scanner.next(); // Clear invalid input
+					}
+				}
+
 				ride.rateRide(rating);
 				driver.updateRating(rating);
 				ride.completeRide();
+
+				System.out
+						.println("Thank you for your feedback! Your rated " + ride.getDriver().getName() + " " + rating + " Stars");
+			} finally {
+				scanner.close();
 			}
+		} else {
+			System.out.println("Payment failed. Ride could not be completed.");
 		}
-
 	}
-
 }
