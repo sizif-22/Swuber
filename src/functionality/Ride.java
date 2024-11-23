@@ -37,7 +37,7 @@ public class Ride {
 	}
 
 	private double calculateCost() {
-		return isShuttle ? 80.0 : 50 + new Random().nextDouble() * 150;
+		return isShuttle ? 80.0 : 50 + new Random().nextDouble() * 150;	
 	}
 
 	public boolean processPayment(Payment payment, String discountCode) {

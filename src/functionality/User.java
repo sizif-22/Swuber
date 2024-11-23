@@ -32,6 +32,9 @@ public class User {
 				ride.setVehicle(matchedDriver.getVehicle()) ;
 				ride.setStatus("ACCEPTED");
 				planner.addRide(ride);
+		}else{
+			System.out.println("No available drivers for the requested location.");
+			return null;
 		}
 		ride.setStatus("PENDING") ;
 		return ride;
