@@ -4,8 +4,8 @@ import java.awt.Color;
 
 import javax.swing.*;
 import gui.homerightpanels.*;
+import gui.loginandregisterpanels.*;
 
-import gui.loginpanels.*;
 public class Frame extends JFrame{
     
     public Frame(){
@@ -19,13 +19,17 @@ public class Frame extends JFrame{
         setLayout(null);
         setResizable(false);
         setLocationRelativeTo(null);
-
-        // add(new LeftPanel());
-        // add(new RightPanel());
+        
+        add(new LeftPanel(false));
+        add(new RegisterPanel());
+        // add(new LoginPanel());
         
         // add(new BookRide());
-        add(new Shuttle());
-        add(new HomeLeftPanel());
+        // add(new Shuttle());
+        // add(new PaymentPanel());
+        // add(new RideCompletedPanel("(His Name)"));
+        // add(new PreviousRides());
+        // add(new HomeLeftPanel());
 
         setVisible(true);
     }

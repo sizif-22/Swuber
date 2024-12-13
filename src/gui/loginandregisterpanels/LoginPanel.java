@@ -1,11 +1,11 @@
-package gui.loginpanels;
+package gui.loginandregisterpanels;
 
 import java.awt.*;
 
 import javax.swing.*;
 
-public class RightPanel extends JPanel{
-    public RightPanel(){
+public class LoginPanel extends JPanel{
+    public LoginPanel(){
         setBounds(300, 0, 900, 800);
         setBackground(Color.BLACK);
         setLayout(null);

@@ -21,7 +21,8 @@ public class HomeLeftPanel extends JPanel{
 
         // Book a Ride Button
         JButton bookRide = new JButton("Book a Ride");
-        bookRide.setBackground(new Color(33, 33, 33));
+        // bookRide.setBackground(new Color(33, 33, 33));
+        bookRide.setContentAreaFilled(false);
         bookRide.setForeground(Color.WHITE);
         bookRide.setBorder(null);
         bookRide.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -32,7 +33,8 @@ public class HomeLeftPanel extends JPanel{
         
         // Swuber Shuttle Button
         JButton swuberShuttle = new JButton("Swuber Shuttle");
-        swuberShuttle.setBackground(new Color(33, 33, 33));
+        // swuberShuttle.setBackground(new Color(33, 33, 33));
+        swuberShuttle.setContentAreaFilled(false);
         swuberShuttle.setForeground(Color.WHITE);
         swuberShuttle.setBorder(null);
         swuberShuttle.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -43,7 +45,8 @@ public class HomeLeftPanel extends JPanel{
 
         // Ride History Button
         JButton rideHistory = new JButton("Ride History");
-        rideHistory.setBackground(new Color(33, 33, 33));
+        // rideHistory.setBackground(new Color(33, 33, 33));
+        rideHistory.setContentAreaFilled(false);
         rideHistory.setForeground(Color.WHITE);
         rideHistory.setBorder(null);
         rideHistory.setFont(new Font("Arial", Font.PLAIN, 30));
