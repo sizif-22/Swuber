@@ -17,9 +17,10 @@ public class PreviousRides extends JPanel{
         h1.setForeground(Color.WHITE);
         h1.setBounds(50, 30, 900, 70);
         add(h1);
-
+        int index = 0;
         for(Ride ride : user.getRideHistory().getRides()){
-            add(new RidesCard(ride.getStartLocation(), ride.getEndLocation(), ride.getDriver().getName(), ride.getRating()));
+            add(new RidesCard(ride.getStartLocation(), ride.getEndLocation(), ride.getDriver().getName(), ride.getRating() ,index));
+            index++;
         }
 
         
