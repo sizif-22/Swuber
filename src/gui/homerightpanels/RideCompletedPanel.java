@@ -4,16 +4,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import functionality.*;
 
 public class RideCompletedPanel extends JPanel {
 
   private Ride ride;
   private Driver driver;
+  private JFormattedTextField tf;
+  private User user;
 
   public RideCompletedPanel(User user, Ride ride, Driver driver) {
     this.ride = ride;
     this.driver = driver;
+    this.user = user;
+
     setBounds(300, 0, 900, 800);
     setBackground(Color.BLACK);
     setLayout(null);
@@ -24,15 +29,15 @@ public class RideCompletedPanel extends JPanel {
     h1.setBounds(50, 70, 900, 70);
     add(h1);
 
-    JLabel h2 = new JLabel("Ride with " + driver.getName() + " :");
+    JLabel h2 = new JLabel("Rate ride with " + driver.getName() + " :");
     h2.setFont(new Font("Arial", Font.BOLD, 30));
     h2.setForeground(Color.WHITE);
-    h2.setBounds(50, 200, 400, 50);
+    h2.setBounds(50, 200, 500, 50);
     add(h2);
 
-    JTextField tf = new JTextField();
+    tf = new JFormattedTextField(NumberFormat.getNumberInstance());
     tf.setFont(new Font("Arial", Font.BOLD, 20));
-    tf.setBounds(410, 200, 400, 50);
+    tf.setBounds(600, 200, 200, 50);
     add(tf);
 
     JLabel h3 = new JLabel("Thank you for using Swuber");
@@ -41,23 +46,6 @@ public class RideCompletedPanel extends JPanel {
     h3.setBounds(0, 350, 900, 70);
     h3.setHorizontalAlignment(JLabel.CENTER);
     add(h3);
-
-    JPanel starPanel = new JPanel();
-    starPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
-    starPanel.setBounds(250, 450, 400, 50);
-    starPanel.setBackground(Color.BLACK);
-    add(starPanel);
-
-    ButtonGroup ratingGroup = new ButtonGroup();
-    JRadioButton[] stars = new JRadioButton[5];
-    for (int i = 0; i < 5; i++) {
-      stars[i] = new JRadioButton(new ImageIcon("star.png"));
-      stars[i].setBackground(Color.BLACK);
-      stars[i].setBorder(null);
-      ratingGroup.add(stars[i]);
-      starPanel.add(stars[i]);
-    }
-    stars[4].setSelected(true);
 
     JButton submitBtn = new JButton("Submit Rating");
     submitBtn.setForeground(Color.white);
@@ -71,20 +59,26 @@ public class RideCompletedPanel extends JPanel {
     submitBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        float rating = 0;
-        for (int i = 0; i < 5; i++) {
-          if (stars[i].isSelected()) {
-            rating = i + 1;
-            break;
+        float rating = 0.0f;
+        try {
+          rating = ((Number) tf.getValue()).floatValue();
+          if (rating < 0 || rating > 5) {
+            JOptionPane.showMessageDialog(null, "Rating must be between 0 and 5!", "Invalid Rating",
+                JOptionPane.ERROR_MESSAGE);
+            return; // Stop further execution
           }
+          ride.rateRide(rating);
+          ride.completeRide();
+          ride.getDriver().markRideAsComplete(ride);
+          user.addRideToHistory(ride);
+          JOptionPane.showMessageDialog(null, "Driver rating submitted successfully!",
+              "Rating Submitted", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NullPointerException ex) {
+          JOptionPane.showMessageDialog(null, "Please enter a rating.", "Invalid Rating", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassCastException ex) {
+          JOptionPane.showMessageDialog(null, "Invalid rating format. Please enter a number.", "Invalid Rating",
+              JOptionPane.ERROR_MESSAGE);
         }
-
-        ride.rateRide(rating);
-        ride.completeRide();
-        ride.getDriver().markRideAsComplete(ride);
-        user.addRideToHistory(ride);
-        JOptionPane.showMessageDialog(null, "Driver rating submitted successfully!",
-            "Rating Submitted", JOptionPane.INFORMATION_MESSAGE);
       }
     });
   }

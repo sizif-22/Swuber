@@ -54,7 +54,7 @@ public class Ride {
 	}
 
 	public void rateRide(float rating) {
-		if (rating >= 0 && rating <= 5) {
+		if (rating >= 0.0f && rating <= 5.0f) {
 			this.rating = rating;
 		}
 	}

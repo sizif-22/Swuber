@@ -41,8 +41,9 @@ public class BookRideCard extends JPanel {
 			startEndLabel.setBounds(20, 60, 500, 40);
 			startEndLabel.setFont(new Font("Arial", Font.PLAIN, 30));
 			add(startEndLabel);
-
-			JLabel priceLabel = new JLabel(String.valueOf(price) + " EGP"); 
+			
+			
+			JLabel priceLabel = new JLabel(String.valueOf(price) + " EGP "); 
 			priceLabel.setForeground(Color.WHITE);
 			priceLabel.setBounds(20, 105, 500, 30);
 			priceLabel.setFont(new Font("Arial", Font.PLAIN, 25));

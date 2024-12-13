@@ -64,8 +64,8 @@ public class BookRide extends JPanel {
 		bookRideBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String pickupLocation = pickupLocationField.getText();
-				String destination = destinationField.getText();
+				String pickupLocation = pickupLocationField.getText().toLowerCase();
+				String destination = destinationField.getText().toLowerCase();
 
 				if (pickupLocation.isEmpty() || destination.isEmpty()) {
 					// Show error message

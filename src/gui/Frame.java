@@ -48,15 +48,15 @@ public class Frame extends JFrame {
 		Vehicle vehicle2 = new Vehicle("Honda Civic", "White", "Comfort", "XYZ789");
 		Vehicle vehicle3 = new Vehicle("Tesla Model 3", "Red", "Premium", "TSL456");
 
-		Driver driver1 = new Driver("Ahmed", "Shobra", vehicle1);
-		Driver driver2 = new Driver("Sherif", "Shobra", vehicle2);
-		Driver driver3 = new Driver("Mohamed", "El Salam", vehicle3);
-        Driver driver4 = new Driver("Nour", "El Salam", vehicle1);
-		Driver driver5 = new Driver("Seif", "Imbaba", vehicle2);
-		Driver driver6 = new Driver("AbdelRahman", "Downtown", vehicle3);
-        Driver driver7 = new Driver("Yosef", "October", vehicle1);
-		Driver driver8 = new Driver("Yousry", "Zayed", vehicle2);
-		Driver driver9 = new Driver("Amir", "Zamalek", vehicle3);
+		Driver driver1 = new Driver("Ahmed", "shobra", vehicle1);
+		Driver driver2 = new Driver("Sherif", "shobra", vehicle2);
+		Driver driver3 = new Driver("Mohamed", "el Salam", vehicle3);
+        Driver driver4 = new Driver("Nour", "el Salam", vehicle1);
+		Driver driver5 = new Driver("Seif", "imbaba", vehicle2);
+		Driver driver6 = new Driver("AbdelRahman", "downtown", vehicle3);
+        Driver driver7 = new Driver("Yosef", "october", vehicle1);
+		Driver driver8 = new Driver("Yousry", "zayed", vehicle2);
+		Driver driver9 = new Driver("Amir", "zamalek", vehicle3);
 
         planner.addDriver(driver1);
         planner.addDriver(driver2);
