@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class RidesCard extends JPanel {
-  static int rideCounter = 0;
+  // static int rideCounter = 0;
 
-  public RidesCard(String startLocation, String endLocation, String driverName, Float rating) {
+  public RidesCard(String startLocation, String endLocation, String driverName, Float rating ,int rideCounter) {
     int height = 130 + rideCounter * 165;
 
     setBounds(50, height, 800, 150);
@@ -32,6 +32,6 @@ public class RidesCard extends JPanel {
     driverRatingLabel.setFont(new Font("Arial", Font.PLAIN, 25));
     add(driverRatingLabel);
 
-    rideCounter++;
+    // rideCounter++;
   }
 }

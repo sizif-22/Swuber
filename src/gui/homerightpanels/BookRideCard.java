@@ -14,16 +14,16 @@ public class BookRideCard extends JPanel {
 	private Frame frame;
 	private User user;
 	private float price;
-	static int rideCounter = 0;
+	// static int rideCounter = 0;
 
-	public BookRideCard(String startLocation, String endLocation, String route, int maxPassengers, float price, Frame frame, User user) {
+	public BookRideCard(String startLocation, String endLocation, String route, int maxPassengers, float price, Frame frame, User user , int rideCounter) {
 			this.startLocation = startLocation;
 			this.endLocation = endLocation;
 			this.frame = frame;
 			this.user = user;
 			this.price = price;
 
-			int height = 130 + rideCounter * 165;
+			int height = 220 + rideCounter * 165;
 
 			setBounds(50, height, 800, 150);
 			setBackground(Color.BLACK);
@@ -66,6 +66,6 @@ public class BookRideCard extends JPanel {
 					}
 			});
 
-			rideCounter++;
+			// rideCounter++;
 	}
 }
