@@ -27,7 +27,7 @@ public class HomeLeftPanel extends JPanel{
         bookRide.setFont(new Font("Arial", Font.PLAIN, 30));
         bookRide.setFocusPainted(false);
         bookRide.setHorizontalAlignment(JButton.LEFT);
-        bookRide.setBounds(30, 200, 230, 40);
+        bookRide.setBounds(30, 200, 230, 60);
         add(bookRide);
         
         // Swuber Shuttle Button
@@ -38,7 +38,7 @@ public class HomeLeftPanel extends JPanel{
         swuberShuttle.setFont(new Font("Arial", Font.PLAIN, 30));
         swuberShuttle.setFocusPainted(false);
         swuberShuttle.setHorizontalAlignment(JButton.LEFT);
-        swuberShuttle.setBounds(30, 270, 230, 40);
+        swuberShuttle.setBounds(30, 270, 230, 60);
         add(swuberShuttle);
 
         // Ride History Button
@@ -49,7 +49,7 @@ public class HomeLeftPanel extends JPanel{
         rideHistory.setFont(new Font("Arial", Font.PLAIN, 30));
         rideHistory.setFocusPainted(false);
         rideHistory.setHorizontalAlignment(JButton.LEFT);
-        rideHistory.setBounds(30, 340, 230, 40);
+        rideHistory.setBounds(30, 340, 230, 60);
         add(rideHistory);
 
 

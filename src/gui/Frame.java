@@ -22,8 +22,10 @@ public class Frame extends JFrame{
 
         // add(new LeftPanel());
         // add(new RightPanel());
+        
+        // add(new BookRide());
+        add(new Shuttle());
         add(new HomeLeftPanel());
-        add(new HomeRightPanel());
 
         setVisible(true);
     }
