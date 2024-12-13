@@ -1,11 +1,25 @@
 package gui.homerightpanels;
 
 import java.awt.*;
-
+import java.awt.event.*;
+import functionality.*;
 import javax.swing.*;
+import gui.Frame;
 
 public class BookRide extends JPanel{
-    public BookRide(){
+
+    private Frame frame;
+    private User user; 
+
+    public BookRide(Frame frame, User user) {
+        this.frame = frame;
+        this.user = user;
+
+
+		System.out.println("Drivers in System: " + Driver.getAllDrivers().size());
+
+
+
         setBounds(300, 0, 900, 800);
         setBackground(Color.BLACK);
         setLayout(null);
@@ -50,5 +64,41 @@ public class BookRide extends JPanel{
         bookRideBtn.setBorder(null);
 
         add(bookRideBtn);
+        bookRideBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String pickupLocation = pickupLocationField.getText();
+                String destination = destinationField.getText();
+
+                if (pickupLocation.isEmpty() || destination.isEmpty()) {
+                    // Show error message
+                    JOptionPane.showMessageDialog(BookRide.this, "Please enter pickup location and destination!");
+                    return;
+                }
+
+                // Create a Ride object with user details and locations
+                Ride ride = new Ride(user, pickupLocation, destination);
+                
+                // Call RidePlanner to match a driver
+                Driver matchedDriver = Frame.planner.matchDriverToRide(ride);
+                if (matchedDriver != null) {
+                    JOptionPane.showMessageDialog(BookRide.this, "Driver found!");
+                    
+                    try {
+                        JOptionPane.showMessageDialog(BookRide.this, "Ride in Progress! Your Driver: " + ride.getDriver().getName() + " Heading to: " + ride.getEndLocation() + " In a " + ride.getDriver().getVehicleInfo());
+
+                        Thread.sleep(5000); // 5 Second Ride Sim : ak
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    // After wait time, show payment panel
+                    frame.gotoPaymentPanel(user, ride);
+                } else {
+                    // No driver found, show error message
+                    JOptionPane.showMessageDialog(BookRide.this, "No driver available at this time. Please try again later.");
+                }
+            }
+        });
     }
 }

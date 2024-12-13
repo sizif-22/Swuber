@@ -1,16 +1,23 @@
 package gui.loginandregisterpanels;
 
 import javax.swing.*;
-import java.awt.*;
 
-public class RegisterPanel extends JPanel{
-    public RegisterPanel(){
+import functionality.User;
+
+import java.awt.*;
+import gui.Frame;
+
+public class RegisterPanel extends JPanel {
+    private Frame mainFrame;
+
+    public RegisterPanel(Frame frame) {
+        this.mainFrame = frame;
         setBounds(300, 0, 900, 800);
         setBackground(Color.BLACK);
         setLayout(null);
 
         // Admin Log In Label
-        JLabel adminLabel = new JLabel("Admin Register");
+        JLabel adminLabel = new JLabel("Register");
         adminLabel.setFont(new Font("Arial", Font.BOLD, 24));
         adminLabel.setForeground(Color.WHITE);
         adminLabel.setBounds(350, 20, 200, 50);
@@ -66,36 +73,57 @@ public class RegisterPanel extends JPanel{
         phoneNumberField.setBounds(250, 340, 400, 30);
         add(phoneNumberField);
 
-        // // Create radio buttons for gender 
-        // JRadioButton maleRadioButton = new JRadioButton("Male"); 
+        // // Create radio buttons for gender
+        // JRadioButton maleRadioButton = new JRadioButton("Male");
         // maleRadioButton.setBounds(50 , 500 , 20,20);
-        // JRadioButton femaleRadioButton = new JRadioButton("Female"); 
+        // JRadioButton femaleRadioButton = new JRadioButton("Female");
         // femaleRadioButton.setBounds(200 , 500 , 20,20);
-        // // Group the radio buttons to ensure only one can be selected at a time 
-        // ButtonGroup genderGroup = new ButtonGroup(); 
-        // genderGroup.add(maleRadioButton); 
-        // genderGroup.add(femaleRadioButton); 
-        // // Add radio buttons to the panel 
-        // add(maleRadioButton); 
+        // // Group the radio buttons to ensure only one can be selected at a time
+        // ButtonGroup genderGroup = new ButtonGroup();
+        // genderGroup.add(maleRadioButton);
+        // genderGroup.add(femaleRadioButton);
+        // // Add radio buttons to the panel
+        // add(maleRadioButton);
         // add(femaleRadioButton);
 
         // مفيش gender علشان احمد خالد ميزعلش
 
-        
         // Register Button
-        JButton registerFormButton = new JButton("Register");
-        registerFormButton.setBackground(new Color(255, 102, 0));
-        registerFormButton.setForeground(Color.WHITE);
-        registerFormButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        registerFormButton.setFocusPainted(false);
-        registerFormButton.setBounds(250, 420, 400, 50);
-        registerFormButton.setBorder(null);
-        add(registerFormButton);
+        JButton registerButton = new JButton("Register");
+        registerButton.setBackground(new Color(255, 102, 0));
+        registerButton.setForeground(Color.WHITE);
+        registerButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        registerButton.setFocusPainted(false);
+        registerButton.setBounds(250, 420, 400, 50);
+        registerButton.setBorder(null);
+        add(registerButton);
 
+        // Register button action listener
+        registerButton.addActionListener(e -> {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            String password = new String(passwordField.getPassword());
+            String phoneNumber = phoneNumberField.getText();
 
-        // already have an account Button
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || phoneNumber.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            User.register(name, email, phoneNumber, password);
+
+            nameField.setText("");
+            emailField.setText("");
+            passwordField.setText("");
+            phoneNumberField.setText("");
+
+            // Switch back to login panel after successful registration
+            mainFrame.setPanel(mainFrame.loginPanel);
+        });
+
+        // Already Have an Account Button
         JButton haveAccountBtn = new JButton("Already Have an Account? Log In");
-        haveAccountBtn.setBackground(new Color(33,33,33));
+        haveAccountBtn.setBackground(new Color(33, 33, 33));
         haveAccountBtn.setForeground(Color.WHITE);
         haveAccountBtn.setFont(new Font("Arial", Font.PLAIN, 16));
         haveAccountBtn.setFocusPainted(false);
@@ -103,5 +131,8 @@ public class RegisterPanel extends JPanel{
         haveAccountBtn.setBorder(null);
         add(haveAccountBtn);
 
+        haveAccountBtn.addActionListener(e -> {
+            mainFrame.setPanel(mainFrame.loginPanel); // Correct call
+        });
     }
 }

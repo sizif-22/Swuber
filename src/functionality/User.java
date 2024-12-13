@@ -1,9 +1,17 @@
 package functionality;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 public class User {
+	private static final String USER_FILE_PATH = "./users.txt"; 
 	private static int userIdCounter = 1;
 	private int userId;
 	private String name;
@@ -82,33 +90,85 @@ public class User {
 
 	public void removeCard(String cardName) {
 		for (Card card : savedPaymentOptions) {
-			if (card.cardName.equalsIgnoreCase(cardName)) {
+			if (card.getCardName().equalsIgnoreCase(cardName)) {
 				savedPaymentOptions.remove(card);
 				break;
 			}
 		}
 	}
 
-	public static void register(String name, String email, String phoneNumber, String password) {
-		for (User user : registeredUsers) {
-			if (user.email.equalsIgnoreCase(email)) {
-				System.out.println("A user with this email already exists.");
-				return;
-			}
-		}
-		User newUser = new User(name, email, phoneNumber, password);
-		registeredUsers.add(newUser);
-		System.out.println("User registered successfully.");
+	public List<Card> getCards(){
+		return savedPaymentOptions;
 	}
 
-	public static User login(String email, String password) {
-		for (User user : registeredUsers) {
-			if (user.email.equalsIgnoreCase(email) && user.password.equals(password)) {
-				System.out.println("Login successful. Welcome, " + user.name + "!");
-				return user;
+public static void register(String name, String email, String phoneNumber, String password) {
+        loadUsersFromFile(); // Load existing users
+
+        for (User user : registeredUsers) {
+            if (user.email.equalsIgnoreCase(email)) {
+                JOptionPane.showMessageDialog(null, "A user with this email already exists.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Stop registration if email exists
+            }
+        }
+
+        User newUser = new User(name, email, phoneNumber, password);
+        registeredUsers.add(newUser);
+        writeUserToFile(newUser);
+
+        JOptionPane.showMessageDialog(null, "User registered successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private static void writeUserToFile(User user) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE_PATH, true))) {
+            writer.write(user.userId + "," + user.name + "," + user.email + "," + user.phoneNumber + "," + user.password);
+            writer.newLine();
+        } catch (IOException e) {
+            System.err.println("Error writing user data to file: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error writing user data to file", "Error", JOptionPane.ERROR_MESSAGE); // Show error message
+        }
+    }
+
+    private static void loadUsersFromFile() {
+        registeredUsers.clear();
+        try (Scanner scanner = new Scanner(new File(USER_FILE_PATH))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] userData = line.split(",");
+                if (userData.length == 5) {
+                    try {
+                        User user = new User(userData[1], userData[2], userData[3], userData[4]);
+                        user.userId = Integer.parseInt(userData[0]);
+                        registeredUsers.add(user);
+                    } catch (NumberFormatException ex) {
+                        System.err.println("Invalid user ID format in file: " + line);
+                    }
+                } else {
+                    System.err.println("Invalid user data format in file: " + line);
+                }
+            }
+        } catch (IOException e) {
+            // Handle file not found exception gracefully
+            System.err.println("Error loading user data from file: " + e.getMessage());
+
+        }
+    }
+
+		public static User login(String email, String password) {
+			loadUsersFromFile(); // Load users from file before login attempt
+
+			for (User user : registeredUsers) {
+					if (user.email.equalsIgnoreCase(email) && user.password.equals(password)) {
+							System.out.println("Login successful. Welcome, " + user.name + "!");
+							return user;
+					}
 			}
-		}
-		System.out.println("Invalid email or password.");
-		return null;
+
+			System.out.println("Invalid email or password.");
+			return null;
 	}
+
+        public static void main(String[] args) {
+        User.register("test", "test@gmail.com", "01111111111", "test");
+        User.login("test@gmail.com", "test");
+    }
 }

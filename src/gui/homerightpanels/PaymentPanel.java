@@ -1,14 +1,29 @@
 package gui.homerightpanels;
 
-import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.*;
+import functionality.*;
+import gui.Frame;
+import gui.homerightpanels.AddNewCardDialog;
 
-public class PaymentPanel extends JPanel{
-    public PaymentPanel(){
+public class PaymentPanel extends JPanel {
 
-        setBounds(300, 0, 900, 800);
-        setBackground(Color.BLACK);
+    private User user;
+    private Ride ride;
+    private Frame frame;
+    private JPanel cardsPanel;
+
+    public PaymentPanel(Frame frame, User user, Ride ride) {
+        this.user = user;
+        this.ride = ride;
+        this.frame = frame;
+
         setLayout(null);
+        setBackground(Color.BLACK);
+
         // H1 Label
         JLabel h1 = new JLabel("Choose a Payment Method");
         h1.setFont(new Font("Arial", Font.BOLD, 50));
@@ -16,14 +31,38 @@ public class PaymentPanel extends JPanel{
         h1.setBounds(50, 20, 900, 70);
         add(h1);
 
-        add(new PaymentCard("Sherif", "skhfowf33r32"));
-        add(new PaymentCard("Sherif", "skhfowf33r32"));
+        // Ride Information Label
+        JLabel rideInfo = new JLabel("Ride from " + ride.getStartLocation() + " to " + ride.getEndLocation());
+        rideInfo.setFont(new Font("Arial", Font.BOLD, 20));
+        rideInfo.setBounds(50, 450, 800, 30);
+        rideInfo.setForeground(Color.white);
+        add(rideInfo);
 
-        int numOfCards = PaymentCard.getCardsCounter(); //each card's height is 150.
-        int height = 120 + numOfCards*150 + 10*(numOfCards - 1);
-        
+        // Payment Card Panel
+        cardsPanel = new JPanel();
+        cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
+        cardsPanel.setBackground(Color.BLACK);
+        cardsPanel.setBounds(50, 120, 800, 300);
+        add(cardsPanel);
+        refreshCards();
+
+        // Calculate height based on number of cards + other elements
+        int numOfCards = user.getCards().size(); // Get the actual number of cards
+        int cardHeight = 150;
+        int spacing = 10;
+        int addNewBtnHeight = 70;
+        int orLabelHeight = 70;
+        int cashBtnHeight = 70;
+        int verticalSpacing = 20; // Spacing between "Add New", "Or", and "Cash"
+
+        int height = 120 + // Initial top margin for cardsPanel
+                numOfCards * cardHeight + // Total height of the cards
+                (numOfCards > 0 ? (numOfCards - 1) * spacing : 0) + // Spacing between cards
+                addNewBtnHeight + verticalSpacing + orLabelHeight + verticalSpacing + cashBtnHeight;
+
+        // Add New Button
         JButton addNewBtn = new JButton("+ Add New");
-        addNewBtn.setBounds(50 , height + 30 , 300 , 70 );
+        addNewBtn.setBounds(50, 450 + 50, 300, addNewBtnHeight); // Position below ride info
         addNewBtn.setFocusPainted(false);
         addNewBtn.setFont(new Font("Arial", Font.BOLD, 20));
         addNewBtn.setForeground(Color.white);
@@ -32,20 +71,43 @@ public class PaymentPanel extends JPanel{
         addNewBtn.setContentAreaFilled(false);
         add(addNewBtn);
 
+        addNewBtn.addActionListener(e -> {
+            AddNewCardDialog dialog = new AddNewCardDialog(frame, user, this);
+            dialog.setVisible(true);
+        });
+
+        // "Or" Label
         JLabel orLabel = new JLabel("Or");
-        orLabel.setBounds(50,height + 120 ,200 , 70 );
+        orLabel.setBounds(50, 450 + 50 + addNewBtnHeight + verticalSpacing, 200, orLabelHeight);
         orLabel.setFont(new Font("Arial", Font.BOLD, 20));
         orLabel.setForeground(Color.white);
         add(orLabel);
 
-        JButton cashBtn = new JButton("+ Add New");
-        cashBtn.setBounds(50 , height + 210 , 150 , 70 );
+        JButton cashBtn = new JButton("Cash");
+        cashBtn.setBounds(50, 450 + 50 + addNewBtnHeight + verticalSpacing + orLabelHeight + verticalSpacing, 150, cashBtnHeight);
         cashBtn.setFocusPainted(false);
         cashBtn.setFont(new Font("Arial", Font.BOLD, 20));
         cashBtn.setBackground(Color.green);
         cashBtn.setForeground(Color.white);
         cashBtn.setBorder(null);
         add(cashBtn);
-        
+
+        cashBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.gotoRideCompletedPanel(user, ride, ride.getDriver()); 
+            }
+        });
+    }
+
+    public void refreshCards() {
+        cardsPanel.removeAll();
+        List<Card> userCards = user.getCards();
+        for (int i = 0; i < Math.min(userCards.size(), 2); i++) {
+            Card card = userCards.get(i);
+            cardsPanel.add(new PaymentCard(frame,user,card.getCardName(), card.getCardL4Numbers(), ride,i));
+        }
+        cardsPanel.revalidate();
+        cardsPanel.repaint();
     }
 }

@@ -1,47 +1,61 @@
 package gui.loginandregisterpanels;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
-public class LoginPanel extends JPanel{
-    public LoginPanel(){
+import functionality.User;
+import gui.Frame;
+
+public class LoginPanel extends JPanel {
+
+    private Frame mainFrame;
+    private JTextField emailField;
+    private JPasswordField passwordField;
+
+    public LoginPanel(Frame frame) {
+        this.mainFrame = frame;
+
         setBounds(300, 0, 900, 800);
         setBackground(Color.BLACK);
         setLayout(null);
 
-        // Admin Log In Label
-        JLabel adminLabel = new JLabel("Admin Log In");
+        JLabel adminLabel = new JLabel("Log In");
         adminLabel.setFont(new Font("Arial", Font.BOLD, 24));
         adminLabel.setForeground(Color.WHITE);
         adminLabel.setBounds(350, 80, 200, 50);
         add(adminLabel);
 
-        // Email Label
         JLabel emailLabel = new JLabel("Email");
         emailLabel.setFont(new Font("Arial", Font.BOLD, 18));
         emailLabel.setForeground(Color.WHITE);
         emailLabel.setBounds(250, 160, 400, 20);
         add(emailLabel);
 
-        // Email TextField
-        JTextField emailField = new JTextField();
+        emailField = new JTextField();
         emailField.setBounds(250, 180, 400, 30);
         add(emailField);
 
-        // Password Label
         JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 18));
         passwordLabel.setForeground(Color.WHITE);
         passwordLabel.setBounds(250, 240, 400, 20);
         add(passwordLabel);
 
-        // Password Field
-        JPasswordField passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setBounds(250, 260, 400, 30);
         add(passwordField);
 
-        // Remember Me Checkbox
         JCheckBox rememberMe = new JCheckBox("Remember me");
         rememberMe.setFont(new Font("Arial", Font.BOLD, 12));
         rememberMe.setForeground(Color.WHITE);
@@ -49,7 +63,6 @@ public class LoginPanel extends JPanel{
         rememberMe.setBounds(250, 300, 150, 20);
         add(rememberMe);
 
-        // Forgot Password Label
         JLabel forgotPassword = new JLabel("Forgot password?");
         forgotPassword.setFont(new Font("Arial", Font.PLAIN, 12));
         forgotPassword.setForeground(Color.LIGHT_GRAY);
@@ -57,7 +70,6 @@ public class LoginPanel extends JPanel{
         add(forgotPassword);
         forgotPassword.setHorizontalAlignment(JLabel.RIGHT);
 
-        // Log In Button
         JButton loginFormButton = new JButton("Log In");
         loginFormButton.setBackground(new Color(255, 102, 0));
         loginFormButton.setForeground(Color.WHITE);
@@ -66,12 +78,36 @@ public class LoginPanel extends JPanel{
         loginFormButton.setBounds(250, 360, 400, 40);
         add(loginFormButton);
 
-        // Register Label
         JLabel registerLabel = new JLabel("Do you have an account? Register");
         registerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         registerLabel.setForeground(Color.LIGHT_GRAY);
         registerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         registerLabel.setBounds(250, 420, 400, 30);
         add(registerLabel);
+
+        JButton registerButton = new JButton("Register");
+        registerButton.setBounds(250, 450, 400, 30);
+        add(registerButton);
+        registerButton.addActionListener(e -> {
+            mainFrame.setPanel(mainFrame.registerPanel);
+        });
+
+        loginFormButton.addActionListener(e -> {
+            String email = emailField.getText();
+            String password = new String(passwordField.getPassword());
+
+            if (email.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(LoginPanel.this, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            User loggedInUser = User.login(email, password);
+            if (loggedInUser != null) {
+                JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                mainFrame.gotoHomePanels(loggedInUser);
+            } else {
+                JOptionPane.showMessageDialog(LoginPanel.this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
 }

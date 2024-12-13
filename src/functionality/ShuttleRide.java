@@ -10,16 +10,18 @@ public class ShuttleRide extends Ride {
     private String route;
     private String startTime;
     private String shuttleArrivalTime;
+    private float price;
 
-    public ShuttleRide(User initialUser, String startLocation, String endLocation, int maxPassengers, String route, String startTime) {
+    public ShuttleRide(User initialUser, String startLocation, String endLocation, int maxPassengers, String route, String startTime, float price) {
         super(initialUser, startLocation, endLocation);
         this.passengers = new ArrayList<>();
         this.passengers.add(initialUser);
         this.maxPassengers = maxPassengers;
-        this.availableSeats = maxPassengers - 1; 
+        this.availableSeats = maxPassengers - 1;
         this.route = route;
         this.startTime = startTime;
         this.shuttleArrivalTime = "";
+        this.price = price;
     }
 
     public int getAvailableSeats() {
@@ -36,7 +38,7 @@ public class ShuttleRide extends Ride {
     }
 
     public List<User> getPassengers() {
-        return new ArrayList<>(passengers);
+        return new ArrayList<>(passengers); // Return a copy to prevent modification
     }
 
     public int getMaxPassengers() {
@@ -58,8 +60,14 @@ public class ShuttleRide extends Ride {
     public void setShuttleArrivalTime(String shuttleArrivalTime) {
         this.shuttleArrivalTime = shuttleArrivalTime;
     }
+    
+    public float getPrice() {
+        return price;
+    }
 
     private String calculateEstimatedArrivalTime() {
-        return "15 Min"; // placeholder idk how we'd calculcate this so lets leave it static
+        // Implement your logic to calculate estimated arrival time
+        // This is a placeholder
+        return "15 Min";
     }
 }

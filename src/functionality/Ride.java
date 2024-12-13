@@ -25,7 +25,7 @@ public class Ride {
 	private float rating;
 	private Date rideDate;
 
-	public Ride( User user, String startLocation, String endLocation) {
+	public Ride(User user, String startLocation, String endLocation) {
 		this.rideID = rideIDGen + 1;
 		this.user = user;
 		this.startLocation = startLocation;
@@ -37,7 +37,7 @@ public class Ride {
 	}
 
 	private double calculateCost() {
-		return isShuttle ? 80.0 : 50 + new Random().nextDouble() * 150;	
+		return isShuttle ? 80.0 : 50 + new Random().nextDouble() * 150;
 	}
 
 	public boolean processPayment(Payment payment, String discountCode) {
@@ -50,20 +50,18 @@ public class Ride {
 	}
 
 	public void completeRide() {
-		if (this.status.equals(STATUS_PAID)) {
 			this.status = STATUS_COMPLETED;
-		}
 	}
 
 	public void rateRide(float rating) {
 		if (rating >= 0 && rating <= 5) {
-				this.rating = rating;
+			this.rating = rating;
 		}
-}
+	}
 
-public float getRating() {
+	public float getRating() {
 		return this.rating;
-}
+	}
 
 	public int getRideID() {
 		return rideID;
@@ -105,12 +103,12 @@ public float getRating() {
 		return payment;
 	}
 
-	public void setDriver(Driver driver){
+	public void setDriver(Driver driver) {
 		this.driver = driver;
 	}
-	
-	public void setVehicle(Vehicle vehicle){
-		this.vehicle= vehicle;
+
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
 	}
 
 	public void setStatus(String status) {

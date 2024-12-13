@@ -3,8 +3,11 @@ package gui.homerightpanels;
 import javax.swing.*;
 import java.awt.*;
 
+import functionality.Ride;
+import functionality.User;
+
 public class PreviousRides extends JPanel{
-    public PreviousRides(){
+    public PreviousRides(Frame frame, User user){
         setBounds(300, 0, 900, 800);
         setBackground(Color.BLACK);
         setLayout(null);
@@ -15,9 +18,11 @@ public class PreviousRides extends JPanel{
         h1.setBounds(50, 30, 900, 70);
         add(h1);
 
-        add(new RidesCard("Imbaba", "Shobra", "elrahmani", "ebda3"));
-        add(new RidesCard("Imbaba", "Shobra", "elrahmani", "ebda3"));
-        add(new RidesCard("Imbaba", "Shobra", "elrahmani", "ebda3"));
+        for(Ride ride : user.getRideHistory().getRides()){
+            add(new RidesCard(ride.getStartLocation(), ride.getEndLocation(), ride.getDriver().getName(), ride.getRating()));
+        }
+
+        
     
     }
 }

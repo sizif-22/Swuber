@@ -6,7 +6,7 @@ import java.awt.*;
 public class RidesCard extends JPanel{
     static int rideCounter = 0;
 
-    public RidesCard(String startLocation , String endLocation , String driverName , String rating){
+    public RidesCard(String startLocation , String endLocation , String driverName , Float rating){
         int height = 130 + rideCounter*165;
 
         setBounds(50, height, 800, 150);
