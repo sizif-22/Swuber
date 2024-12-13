@@ -57,6 +57,13 @@ public class User {
 	public String getEmail() {
 		return this.email;
 	}
+	public String getPhone(){
+		return this.phoneNumber;
+	}
+	public String getPassword(){
+		// this is dumb btw, this should only ever return hashes.
+		return this.password;
+	}
 
 	public void setEmail(String email) {
 		this.email = email;

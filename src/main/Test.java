@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 import functionality.*;
 
-public class App {
+public class Test {
 	public static void main(String[] args) {
 		System.out.println("=== Initializing System ===");
 		RidePlanner planner = new RidePlanner();
@@ -52,7 +52,6 @@ public class App {
 		}
 
 		processRide(planner, user1, driver1, "Downtown", "Uptown");
-
 	}
 
 	private static void processRide(RidePlanner planner, User user, Driver driver, String startLocation,
@@ -69,7 +68,6 @@ public class App {
 		System.out.println("Ride Cost: $" + String.format("%.2f", ride.getCost()));
 		System.out.println("Ride accepted by: " + ride.getDriver().getName());
 
-		// simulate payment and ride completion
 		Card card = new Card("Visa", "4111111111111111", "12/25", user.getName());
 		Payment payment = new Payment(ride, user, card, ride.getCost());
 		boolean paymentSuccess = ride.processPayment(payment, null);
@@ -78,9 +76,8 @@ public class App {
 			System.out.println("Payment processed successfully");
 			driver.markRideAsComplete(ride);
 			user.addRideToHistory(ride);
-			planner.completeRide(ride);
+			planner.completeRide(ride, payment, null);
 
-			// Get ride rating from user - scanner
 			Scanner scanner = new Scanner(System.in);
 			try {
 				float rating = -1;
@@ -93,7 +90,7 @@ public class App {
 						}
 					} else {
 						System.out.println("Invalid input. Please enter a numeric value.");
-						scanner.next(); // Clear invalid input
+						scanner.next();
 					}
 				}
 

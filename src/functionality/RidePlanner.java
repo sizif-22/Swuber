@@ -50,8 +50,11 @@ public class RidePlanner {
 		activeRides.add(ride);
 	}
 
-	public void completeRide(Ride ride) {
+	public void completeRide(Ride ride, Payment pMethod, String discountCode) {
+		ride.processPayment(pMethod, discountCode);
+		ride.getDriver().markRideAsComplete(ride);
+		ride.setStatus("COMPLETED");
+		ride.getUser().addRideToHistory(ride);
 		activeRides.remove(ride);
-		ride.getDriver().setAvailable(true);
 	}
 }
