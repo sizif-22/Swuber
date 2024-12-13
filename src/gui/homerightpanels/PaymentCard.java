@@ -39,7 +39,14 @@ public class PaymentCard extends JPanel {
         add(bookBtn);
 
         bookBtn.addActionListener(e -> {
-            frame.gotoRideCompletedPanel(user, ride, ride.getDriver());
+            if (ride instanceof ShuttleRide && ride != null) {
+                ShuttleRide shuttleRide = (ShuttleRide) ride; 
+                shuttleRide.addPassenger(user); 
+                JOptionPane.showMessageDialog(frame, "Shuttle seat reserved.", "Reservation Confirmed", JOptionPane.INFORMATION_MESSAGE);
+                frame.gotoHomePanels(user); 
+            } else {
+                frame.gotoRideCompletedPanel(user, ride, ride.getDriver()); 
+            }       
         });
 
         cardsCounter++;

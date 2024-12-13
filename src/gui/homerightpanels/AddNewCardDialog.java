@@ -9,8 +9,6 @@ import gui.Frame;
 
 public class AddNewCardDialog extends JDialog {
 
-    // ... other fields
-
     public AddNewCardDialog(Frame owner, User user, PaymentPanel paymentPanel) {
         super(owner, "Add New Card", true);
         this.user = user;
@@ -24,7 +22,7 @@ public class AddNewCardDialog extends JDialog {
         JLabel cardNumberLabel = new JLabel("Card Number:");
         cardNumberField = new JTextField();
         JLabel expirationDateLabel = new JLabel("Expiration Date (MM/YY):"); // Label for expiration date
-        expirationDateField = new JTextField(); // Field for expiration date
+        expirationDateField = new JTextField(); 
         JLabel cardHolderNameLabel = new JLabel("Card Holder Name:");
         cardHolderNameField = new JTextField();
 
@@ -34,8 +32,8 @@ public class AddNewCardDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 String cardName = cardNameField.getText();
                 String cardNumber = cardNumberField.getText();
-                String expirationDate = expirationDateField.getText(); // Get expiration date
-                String cardHolderName = cardHolderNameField.getText(); // Get card holder name
+                String expirationDate = expirationDateField.getText(); 
+                String cardHolderName = cardHolderNameField.getText(); 
 
                 if (cardName.isEmpty() || cardNumber.isEmpty() || expirationDate.isEmpty() || cardHolderName.isEmpty()) {
                     JOptionPane.showMessageDialog(AddNewCardDialog.this, "Please fill in all card details.");
@@ -53,8 +51,8 @@ public class AddNewCardDialog extends JDialog {
         contentPane.add(cardNameField);
         contentPane.add(cardNumberLabel);
         contentPane.add(cardNumberField);
-        contentPane.add(expirationDateLabel); // Add expiration date label
-        contentPane.add(expirationDateField); // Add expiration date field
+        contentPane.add(expirationDateLabel); 
+        contentPane.add(expirationDateField); 
         contentPane.add(cardHolderNameLabel);
         contentPane.add(cardHolderNameField);
         contentPane.add(new JLabel(""));
@@ -66,7 +64,6 @@ public class AddNewCardDialog extends JDialog {
         setVisible(true);
     }
 
-    // ... other methods (if any)
     private JTextField expirationDateField;
     private JTextField cardHolderNameField;
     private JTextField cardNameField;

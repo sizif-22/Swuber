@@ -46,18 +46,18 @@ public class PaymentPanel extends JPanel {
         add(cardsPanel);
         refreshCards();
 
-        // Calculate height based on number of cards + other elements
-        int numOfCards = user.getCards().size(); // Get the actual number of cards
+
+        int numOfCards = user.getCards().size(); 
         int cardHeight = 150;
         int spacing = 10;
         int addNewBtnHeight = 70;
         int orLabelHeight = 70;
         int cashBtnHeight = 70;
-        int verticalSpacing = 20; // Spacing between "Add New", "Or", and "Cash"
+        int verticalSpacing = 20; 
 
-        int height = 120 + // Initial top margin for cardsPanel
-                numOfCards * cardHeight + // Total height of the cards
-                (numOfCards > 0 ? (numOfCards - 1) * spacing : 0) + // Spacing between cards
+        int height = 120 + 
+                numOfCards * cardHeight + 
+                (numOfCards > 0 ? (numOfCards - 1) * spacing : 0) +
                 addNewBtnHeight + verticalSpacing + orLabelHeight + verticalSpacing + cashBtnHeight;
 
         // Add New Button
@@ -95,9 +95,17 @@ public class PaymentPanel extends JPanel {
         cashBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.gotoRideCompletedPanel(user, ride, ride.getDriver()); 
+                if (ride instanceof ShuttleRide && ride != null) {
+                    ShuttleRide shuttleRide = (ShuttleRide) ride; 
+                    shuttleRide.addPassenger(user); 
+                    JOptionPane.showMessageDialog(frame, "Shuttle seat reserved.", "Reservation Confirmed", JOptionPane.INFORMATION_MESSAGE);
+                    frame.gotoHomePanels(user); 
+                } else {
+                    frame.gotoRideCompletedPanel(user, ride, ride.getDriver()); 
+                }
             }
         });
+        
     }
 
     public void refreshCards() {
@@ -105,7 +113,7 @@ public class PaymentPanel extends JPanel {
         List<Card> userCards = user.getCards();
         for (int i = 0; i < Math.min(userCards.size(), 2); i++) {
             Card card = userCards.get(i);
-            cardsPanel.add(new PaymentCard(frame,user,card.getCardName(), card.getCardL4Numbers(), ride,i));
+            cardsPanel.add(new PaymentCard(frame, user, card.getCardName(), card.getCardL4Numbers(), ride, i));
         }
         cardsPanel.revalidate();
         cardsPanel.repaint();
