@@ -26,7 +26,7 @@ public class LeftPanel extends JPanel implements ActionListener {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Add top spacing
-        add(Box.createRigidArea(new Dimension(0, 50))); // Adjust the vertical space here
+        add(Box.createRigidArea(new Dimension(0, 50))); 
 
         // Welcome Label
         JLabel welcomeLabel = new JLabel("Welcome", SwingConstants.CENTER);
@@ -39,7 +39,7 @@ public class LeftPanel extends JPanel implements ActionListener {
         add(welcomeLabel);
 
         // Add spacing between title and buttons
-        add(Box.createRigidArea(new Dimension(0, 50))); // Adjust vertical space here
+        add(Box.createRigidArea(new Dimension(0, 50))); 
 
         // Log In Button
         JButton loginButton = new JButton("Log In");

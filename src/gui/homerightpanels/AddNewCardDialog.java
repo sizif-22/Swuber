@@ -14,14 +14,14 @@ public class AddNewCardDialog extends JDialog {
         this.user = user;
         this.paymentPanel = paymentPanel;
         
-        JPanel contentPane = new JPanel(new GridLayout(5, 2, 5, 5)); // Increased rows for new fields
+        JPanel contentPane = new JPanel(new GridLayout(5, 2, 5, 5)); 
         contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel cardNameLabel = new JLabel("Card Name:");
         cardNameField = new JTextField();
         JLabel cardNumberLabel = new JLabel("Card Number:");
         cardNumberField = new JTextField();
-        JLabel expirationDateLabel = new JLabel("Expiration Date (MM/YY):"); // Label for expiration date
+        JLabel expirationDateLabel = new JLabel("Expiration Date (MM/YY):"); 
         expirationDateField = new JTextField(); 
         JLabel cardHolderNameLabel = new JLabel("Card Holder Name:");
         cardHolderNameField = new JTextField();

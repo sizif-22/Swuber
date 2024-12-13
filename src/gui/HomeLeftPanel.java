@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import functionality.*;
@@ -14,7 +13,7 @@ public class HomeLeftPanel extends JPanel {
     public HomeLeftPanel(Frame frame, User user) {
         setBounds(0, 0, 300, 800);
         setBackground(new Color(33, 33, 33));
-        setLayout(null); // Consider using a layout manager for better maintainability
+        setLayout(null); 
 
         this.mainFrame = frame;
         this.currentUser = user;
@@ -29,8 +28,8 @@ public class HomeLeftPanel extends JPanel {
 
         // Configure buttons
         configureButton(createButton("Book a Ride", 200), e -> mainFrame.gotoBookRidePanel(currentUser));
-        configureButton(createButton("Swuber Shuttle", 270), e -> mainFrame.gotoSwuberShuttlePanel(currentUser)); // New method in Frame
-        configureButton(createButton("Ride History", 340), e -> mainFrame.gotoRideHistoryPanel(currentUser)); // New method in Frame
+        configureButton(createButton("Swuber Shuttle", 270), e -> mainFrame.gotoSwuberShuttlePanel(currentUser)); 
+        configureButton(createButton("Ride History", 340), e -> mainFrame.gotoRideHistoryPanel(currentUser)); 
 
         // User Info
         ImageIcon originalUserIcon = new ImageIcon(HomeLeftPanel.class.getResource("../user.png"));

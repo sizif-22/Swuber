@@ -97,6 +97,7 @@ public class Driver {
         if (ride != null && ride.getStatus().equals("PAID")) {
             this.completedRides++;
             this.rideHistory.addRide(ride);
+            this.setLocation(ride.getEndLocation());
             setAvailable(true);
         }
     }

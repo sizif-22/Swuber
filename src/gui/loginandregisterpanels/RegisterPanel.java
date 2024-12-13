@@ -117,7 +117,7 @@ public class RegisterPanel extends JPanel {
             passwordField.setText("");
             phoneNumberField.setText("");
 
-            // Switch back to login panel after successful registration
+            // back to login panel after successful registration
             mainFrame.setPanel(mainFrame.loginPanel);
         });
 
@@ -132,7 +132,7 @@ public class RegisterPanel extends JPanel {
         add(haveAccountBtn);
 
         haveAccountBtn.addActionListener(e -> {
-            mainFrame.setPanel(mainFrame.loginPanel); // Correct call
+            mainFrame.setPanel(mainFrame.loginPanel); 
         });
     }
 }

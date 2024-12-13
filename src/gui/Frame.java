@@ -48,13 +48,25 @@ public class Frame extends JFrame {
 		Vehicle vehicle2 = new Vehicle("Honda Civic", "White", "Comfort", "XYZ789");
 		Vehicle vehicle3 = new Vehicle("Tesla Model 3", "Red", "Premium", "TSL456");
 
-		Driver driver1 = new Driver("Ahmed", "Downtown", vehicle1);
-		Driver driver2 = new Driver("Sherif", "Uptown", vehicle2);
-		Driver driver3 = new Driver("Mo", "Downtown", vehicle3);
+		Driver driver1 = new Driver("Ahmed", "Shobra", vehicle1);
+		Driver driver2 = new Driver("Sherif", "Shobra", vehicle2);
+		Driver driver3 = new Driver("Mohamed", "El Salam", vehicle3);
+        Driver driver4 = new Driver("Nour", "El Salam", vehicle1);
+		Driver driver5 = new Driver("Seif", "Imbaba", vehicle2);
+		Driver driver6 = new Driver("AbdelRahman", "Downtown", vehicle3);
+        Driver driver7 = new Driver("Yosef", "October", vehicle1);
+		Driver driver8 = new Driver("Yousry", "Zayed", vehicle2);
+		Driver driver9 = new Driver("Amir", "Zamalek", vehicle3);
 
         planner.addDriver(driver1);
         planner.addDriver(driver2);
         planner.addDriver(driver3);
+        planner.addDriver(driver4);
+        planner.addDriver(driver5);
+        planner.addDriver(driver6);
+        planner.addDriver(driver7);
+        planner.addDriver(driver8);
+        planner.addDriver(driver9);
 
     }
 
@@ -65,7 +77,7 @@ public class Frame extends JFrame {
     }
     public void gotoHomePanels(User user) { 
         leftPanel.removeAll(); 
-        leftPanel.add(new HomeLeftPanel(this, user), BorderLayout.CENTER); // Add HomeLeftPanel
+        leftPanel.add(new HomeLeftPanel(this, user), BorderLayout.CENTER); 
         leftPanel.revalidate(); 
         leftPanel.repaint();
 
@@ -89,11 +101,11 @@ public class Frame extends JFrame {
     }
     
     public void gotoSwuberShuttlePanel(User user) {
-        setPanel(new Shuttle(this, user)); // Assuming you have this panel
+        setPanel(new Shuttle(this, user)); 
     }
     
     public void gotoRideHistoryPanel(User user) {
-        setPanel(new PreviousRides(this, user)); // Assuming you have this panel
+        setPanel(new PreviousRides(this, user)); 
     }
 
     public static void main(String[] args) {

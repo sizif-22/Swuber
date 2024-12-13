@@ -62,7 +62,7 @@ public class PaymentPanel extends JPanel {
 
         // Add New Button
         JButton addNewBtn = new JButton("+ Add New");
-        addNewBtn.setBounds(50, 450 + 50, 300, addNewBtnHeight); // Position below ride info
+        addNewBtn.setBounds(50, 450 + 50, 300, addNewBtnHeight); 
         addNewBtn.setFocusPainted(false);
         addNewBtn.setFont(new Font("Arial", Font.BOLD, 20));
         addNewBtn.setForeground(Color.white);
