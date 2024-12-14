@@ -68,7 +68,9 @@ public class Driver {
     public Vehicle getVehicle() {
         return vehicle;
     }
-
+    public String getVehicleInfo(){
+        return vehicle.getColor() +" " + vehicle.getVehicleModel() +" "+ "License Plate: " + vehicle.getLicenseNo();
+    }
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
@@ -95,6 +97,7 @@ public class Driver {
         if (ride != null && ride.getStatus().equals("PAID")) {
             this.completedRides++;
             this.rideHistory.addRide(ride);
+            this.setLocation(ride.getEndLocation());
             setAvailable(true);
         }
     }
