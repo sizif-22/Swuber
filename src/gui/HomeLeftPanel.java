@@ -38,6 +38,23 @@ public class HomeLeftPanel extends JPanel {
         Image resizedUserImage = originalUserImage.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon userIcon = new ImageIcon(resizedUserImage);
 
+        
+        // Exit Button
+        ImageIcon originalExitIcon = new ImageIcon(HomeLeftPanel.class.getResource("../Exit-icon.png"));
+        Image originalExitImage = originalExitIcon.getImage();
+        Image resizedExitImage = originalExitImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon ExitIcon = new ImageIcon(resizedExitImage);
+        
+        JButton exitBtn = new JButton();
+        exitBtn.setIcon(ExitIcon);
+        exitBtn.setFocusPainted(false);
+        exitBtn.setBorderPainted(false);
+        exitBtn.setBounds(250, 680, 50, 80);
+        exitBtn.setBackground(new Color(11, 11, 11));
+        add(exitBtn);
+        
+        exitBtn.addActionListener(e -> System.exit(0)); // Close the application
+
         JLabel footer = new JLabel(currentUser.getName());
         footer.setFont(new Font("Arial", Font.PLAIN, 20));
         footer.setForeground(Color.white);
@@ -49,22 +66,6 @@ public class HomeLeftPanel extends JPanel {
         footer.setHorizontalAlignment(SwingConstants.LEFT);
         footer.setBounds(0, 680, 300, 80);
         add(footer);
-
-        // Exit Button
-        ImageIcon originalExitIcon = new ImageIcon(HomeLeftPanel.class.getResource("../Exit-icon.png"));
-        Image originalExitImage = originalExitIcon.getImage();
-        Image resizedExitImage = originalExitImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        ImageIcon ExitIcon = new ImageIcon(resizedExitImage);
-
-        JButton exitBtn = new JButton();
-        exitBtn.setIcon(ExitIcon);
-        exitBtn.setFocusPainted(false);
-        exitBtn.setBorderPainted(false);
-        exitBtn.setBounds(250, 680, 50, 80);
-        exitBtn.setBackground(new Color(11, 11, 11));
-        add(exitBtn);
-
-        exitBtn.addActionListener(e -> System.exit(0)); // Close the application
     }
 
     private void configureButton(JButton button, ActionListener listener) {
