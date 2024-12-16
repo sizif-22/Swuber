@@ -4,12 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class RidesCard extends JPanel {
-  // static int rideCounter = 0;
 
   public RidesCard(String startLocation, String endLocation, String driverName, Float rating ,int rideCounter) {
-    int height = 130 + rideCounter * 165;
+    int height = 10 + rideCounter * 165;
 
-    setBounds(50, height, 800, 150);
+    setBounds(10, height, 800, 150);
     setBackground(new Color(55,55,55));
 
     setLayout(null);
