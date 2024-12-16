@@ -9,7 +9,8 @@ import functionality.User;
 public class PreviousRides extends JPanel{
     public PreviousRides(Frame frame, User user){
         setBounds(300, 0, 900, 800);
-        setBackground(Color.BLACK);
+        setBackground(new Color(55,55,55));
+
         setLayout(null);
      
         JLabel h1 = new JLabel("Previous Rides");

@@ -10,7 +10,8 @@ public class RidesCard extends JPanel {
     int height = 130 + rideCounter * 165;
 
     setBounds(50, height, 800, 150);
-    setBackground(Color.BLACK);
+    setBackground(new Color(55,55,55));
+
     setLayout(null);
     setBorder(BorderFactory.createLineBorder(Color.white, 3));
 

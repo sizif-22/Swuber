@@ -25,7 +25,7 @@ public class LoginPanel extends JPanel {
         this.mainFrame = frame;
 
         setBounds(300, 0, 900, 800);
-        setBackground(Color.BLACK);
+        setBackground(new Color(55,55,55));
         setLayout(null);
 
         JLabel adminLabel = new JLabel("Log In");
@@ -57,7 +57,7 @@ public class LoginPanel extends JPanel {
         JCheckBox rememberMe = new JCheckBox("Remember me");
         rememberMe.setFont(new Font("Arial", Font.BOLD, 12));
         rememberMe.setForeground(Color.WHITE);
-        rememberMe.setBackground(Color.BLACK);
+        rememberMe.setBackground(new Color(55,55,55));
         rememberMe.setBounds(250, 300, 150, 20);
         add(rememberMe);
 

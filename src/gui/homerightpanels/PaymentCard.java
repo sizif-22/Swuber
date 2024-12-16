@@ -10,10 +10,11 @@ public class PaymentCard extends JPanel {
     static int cardsCounter = 0;
 
     public PaymentCard(Frame frame, User user, String cardName, String cardNumber, Ride ride, int i) {
-        int height = 120 + 160 * i;
+        int height = 10 + 160 * i;
 
-        setBounds(50, height, 800, 150);
-        setBackground(Color.BLACK);
+        setBounds(10, height, 800, 150);
+        setBackground(new Color(55,55,55));
+
         setLayout(null);
         setBorder(BorderFactory.createLineBorder(Color.white, 3));
 

@@ -1,12 +1,13 @@
 package gui.homerightpanels;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.*;
 import functionality.*;
 import gui.Frame;
-import gui.homerightpanels.*;
+import gui.homerightpanels.AddNewCardDialog;
 
 public class PaymentPanel extends JPanel {
 
@@ -40,30 +41,11 @@ public class PaymentPanel extends JPanel {
 
         // Payment Card Panel
         cardsPanel = new JPanel();
-        // cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
-        cardsPanel.setBackground(new Color(33,33,33));
-        // cardsPanel.setBounds(50, 120, 800, 300);
-        
-        // JPanel contentPanel = new JPanel();
-        cardsPanel.setLayout(null); // Use null layout for absolute positioning
-        cardsPanel.setBorder(null);
-        
-        
+        cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
+        cardsPanel.setBackground(Color.BLACK);
+        cardsPanel.setBounds(50, 120, 800, 300);
+        add(cardsPanel);
         refreshCards();
-
-        
-        // Set the preferred size for scrolling
-        // add(cardsPanel);
-        
-        
-        JScrollPane scrollPane = new JScrollPane(cardsPanel);
-        scrollPane.setBounds(20, 120, 840, 300); // Set the bounds for the scrollable panel
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        
-        // Add the scroll pane to this panel
-        scrollPane.setBorder(null);
-        add(scrollPane);
 
 
         int numOfCards = user.getCards().size(); 
@@ -128,19 +110,13 @@ public class PaymentPanel extends JPanel {
     }
 
     public void refreshCards() {
-        
         cardsPanel.removeAll();
-        int counter=0;
         List<Card> userCards = user.getCards();
         for (int i = 0; i < Math.min(userCards.size(), 2); i++) {
             Card card = userCards.get(i);
             cardsPanel.add(new PaymentCard(frame, user, card.getCardName(), card.getCardL4Numbers(), ride, i));
-            counter++;
         }
         cardsPanel.revalidate();
         cardsPanel.repaint();
-        System.out.println("counter is : "+counter);
-        cardsPanel.setPreferredSize(new Dimension(820, counter*160+10)); 
-        
     }
 }

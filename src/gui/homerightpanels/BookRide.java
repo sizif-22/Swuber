@@ -18,7 +18,7 @@ public class BookRide extends JPanel {
 		System.out.println("Drivers in System: " + Driver.getAllDrivers().size());
 
 		setBounds(300, 0, 900, 800);
-		setBackground(Color.BLACK);
+		setBackground(new Color(55,55,55));
 		setLayout(null);
 
 		// title Label

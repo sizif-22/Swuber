@@ -1,12 +1,10 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+
+import javax.swing.*;
+
 
 import functionality.*;
 import gui.homerightpanels.*;
@@ -21,9 +19,11 @@ public class Frame extends JFrame {
     public static RidePlanner planner;
 
     public Frame() {
+        ImageIcon img = new ImageIcon(Frame.class.getResource("../swuber.jpg"));
+        setIconImage(img.getImage());
         planner = new RidePlanner();
         setTitle("Swuber");
-        getContentPane().setBackground(Color.BLACK);
+        getContentPane().setBackground(new Color(55,55,55));
 
         setSize(1200, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

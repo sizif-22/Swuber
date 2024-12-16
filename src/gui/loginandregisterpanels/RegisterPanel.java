@@ -13,7 +13,7 @@ public class RegisterPanel extends JPanel {
     public RegisterPanel(Frame frame) {
         this.mainFrame = frame;
         setBounds(300, 0, 900, 800);
-        setBackground(Color.BLACK);
+        setBackground(new Color(55,55,55));
         setLayout(null);
 
         // Admin Log In Label
