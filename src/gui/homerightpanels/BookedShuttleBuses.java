@@ -7,8 +7,11 @@ import gui.Frame;
 
 public class BookedShuttleBuses extends JPanel {
 
-
-  public BookedShuttleBuses() {
+  User user;
+  Frame frame;
+  public BookedShuttleBuses(Frame frmae,User user) {
+    this.user = user;
+    this.frame = frame;
 
     setBounds(300, 0, 900, 800);
     setBackground(new Color(55,55,55));

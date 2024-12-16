@@ -23,9 +23,9 @@ public class BookRideCard extends JPanel {
 			this.user = user;
 			this.price = price;
 
-			int height = 220 + rideCounter * 165;
+			int height = 10 + rideCounter * 165;
 
-			setBounds(50, height, 800, 150);
+			setBounds(10, height, 800, 150);
 			setBackground(new Color(55,55,55));
 			setLayout(null); 
 			setBorder(BorderFactory.createLineBorder(Color.white, 3));

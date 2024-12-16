@@ -103,6 +103,9 @@ public class Frame extends JFrame {
     public void gotoSwuberShuttlePanel(User user) {
         setPanel(new Shuttle(this, user)); 
     }
+    public void gotoScheduled(User user) {
+        setPanel(new BookedShuttleBuses(this, user)); 
+    }
     
     public void gotoRideHistoryPanel(User user) {
         setPanel(new PreviousRides(this, user)); 

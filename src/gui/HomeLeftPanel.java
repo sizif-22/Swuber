@@ -29,7 +29,8 @@ public class HomeLeftPanel extends JPanel {
         // Configure buttons
         configureButton(createButton("Book a Ride", 200), e -> mainFrame.gotoBookRidePanel(currentUser));
         configureButton(createButton("Swuber Shuttle", 270), e -> mainFrame.gotoSwuberShuttlePanel(currentUser)); 
-        configureButton(createButton("Ride History", 340), e -> mainFrame.gotoRideHistoryPanel(currentUser)); 
+        configureButton(createButton("Ride History", 340), e -> mainFrame.gotoRideHistoryPanel(currentUser));
+        configureButton(createButton("Scheduled", 410), e -> mainFrame.gotoScheduled(currentUser)); 
 
         // User Info
         ImageIcon originalUserIcon = new ImageIcon(HomeLeftPanel.class.getResource("../user.png"));
