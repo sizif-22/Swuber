@@ -52,7 +52,9 @@ public class RidePlanner {
 	}
 
 	public void completeRide(Ride ride) {
+		ride.setStatus("COMPLETED");
 		activeRides.remove(ride);
-		ride.getDriver().setAvailable(true);
+		ride.getDriver().markRideAsComplete(ride);
+		ride.getUser().addRideToHistory(ride);
 	}
 }

@@ -103,6 +103,10 @@ public class Ride {
 		return payment;
 	}
 
+	public Date getDate(){
+		return this.rideDate;
+	}
+
 	public void setDriver(Driver driver) {
 		this.driver = driver;
 	}

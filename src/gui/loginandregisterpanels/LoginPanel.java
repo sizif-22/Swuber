@@ -54,20 +54,6 @@ public class LoginPanel extends JPanel {
         passwordField.setBounds(250, 260, 400, 30);
         add(passwordField);
 
-        JCheckBox rememberMe = new JCheckBox("Remember me");
-        rememberMe.setFont(new Font("Arial", Font.BOLD, 12));
-        rememberMe.setForeground(Color.WHITE);
-        rememberMe.setBackground(Color.BLACK);
-        rememberMe.setBounds(250, 300, 150, 20);
-        add(rememberMe);
-
-        JLabel forgotPassword = new JLabel("Forgot password?");
-        forgotPassword.setFont(new Font("Arial", Font.PLAIN, 12));
-        forgotPassword.setForeground(Color.LIGHT_GRAY);
-        forgotPassword.setBounds(500, 300, 150, 20);
-        add(forgotPassword);
-        forgotPassword.setHorizontalAlignment(JLabel.RIGHT);
-
         JButton loginFormButton = new JButton("Log In");
         loginFormButton.setBackground(new Color(255, 102, 0));
         loginFormButton.setForeground(Color.WHITE);
@@ -76,7 +62,7 @@ public class LoginPanel extends JPanel {
         loginFormButton.setBounds(250, 360, 400, 40);
         add(loginFormButton);
 
-        JLabel registerLabel = new JLabel("Do you have an account? Register");
+        JLabel registerLabel = new JLabel("Don't have an account? Register");
         registerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         registerLabel.setForeground(Color.LIGHT_GRAY);
         registerLabel.setHorizontalAlignment(SwingConstants.CENTER);
