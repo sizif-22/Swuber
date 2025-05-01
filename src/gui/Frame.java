@@ -113,11 +113,11 @@ public class Frame extends JFrame {
         setPanel(new BookRide(this, user));
     }
 
-    public void gotoSwuberShuttlePanel(User user) {
+    public void gotoSwuberShuttlePanel(User user) throws SQLException {
         setPanel(new Shuttle(this, user));
     }
 
-    public void gotoScheduled(User user) {
+    public void gotoScheduled(User user) throws SQLException {
         setPanel(new BookedShuttleBuses(this, user));
     }
 

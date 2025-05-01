@@ -15,7 +15,7 @@ public class HomeLeftPanel extends JPanel {
     public HomeLeftPanel(Frame frame, User user) {
         setBounds(0, 0, 300, 800);
         setBackground(new Color(33, 33, 33));
-        setLayout(null); 
+        setLayout(null);
 
         this.mainFrame = frame;
         this.currentUser = user;
@@ -30,7 +30,13 @@ public class HomeLeftPanel extends JPanel {
 
         // Configure buttons
         configureButton(createButton("Book a Ride", 200), e -> mainFrame.gotoBookRidePanel(currentUser));
-        configureButton(createButton("Swuber Shuttle", 270), e -> mainFrame.gotoSwuberShuttlePanel(currentUser)); 
+        configureButton(createButton("Swuber Shuttle", 270), e -> {
+            try {
+                mainFrame.gotoSwuberShuttlePanel(currentUser);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
         configureButton(createButton("Ride History", 340), e -> {
             try {
                 mainFrame.gotoRideHistoryPanel(currentUser);
@@ -38,7 +44,13 @@ public class HomeLeftPanel extends JPanel {
                 e1.printStackTrace();
             }
         });
-        configureButton(createButton("Scheduled", 410), e -> mainFrame.gotoScheduled(currentUser)); 
+        configureButton(createButton("Scheduled", 410), e -> {
+            try {
+                mainFrame.gotoScheduled(currentUser);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
 
         // User Info
         ImageIcon originalUserIcon = new ImageIcon(HomeLeftPanel.class.getResource("../user.png"));
@@ -46,13 +58,12 @@ public class HomeLeftPanel extends JPanel {
         Image resizedUserImage = originalUserImage.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon userIcon = new ImageIcon(resizedUserImage);
 
-        
         // Exit Button
         ImageIcon originalExitIcon = new ImageIcon(HomeLeftPanel.class.getResource("../Exit-icon.png"));
         Image originalExitImage = originalExitIcon.getImage();
         Image resizedExitImage = originalExitImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon ExitIcon = new ImageIcon(resizedExitImage);
-        
+
         JButton exitBtn = new JButton();
         exitBtn.setIcon(ExitIcon);
         exitBtn.setFocusPainted(false);
@@ -60,7 +71,7 @@ public class HomeLeftPanel extends JPanel {
         exitBtn.setBounds(250, 680, 50, 80);
         exitBtn.setBackground(new Color(11, 11, 11));
         add(exitBtn);
-        
+
         exitBtn.addActionListener(e -> System.exit(0)); // Close the application
 
         JLabel footer = new JLabel(currentUser.getName());
@@ -69,8 +80,8 @@ public class HomeLeftPanel extends JPanel {
         footer.setBackground(new Color(11, 11, 11));
         footer.setOpaque(true);
         footer.setIcon(userIcon);
-        footer.setIconTextGap(15); 
-        footer.setHorizontalTextPosition(JLabel.RIGHT); 
+        footer.setIconTextGap(15);
+        footer.setHorizontalTextPosition(JLabel.RIGHT);
         footer.setHorizontalAlignment(SwingConstants.LEFT);
         footer.setBounds(0, 680, 300, 80);
         add(footer);

@@ -47,11 +47,11 @@ CREATE TABLE Card (
 );
 
 -- RideHistory table
-CREATE TABLE RideHistory (
-    rideHistoryId VARCHAR(50) PRIMARY KEY,
-    userId int NOT NULL,
-    FOREIGN KEY (userId) REFERENCES Users(userId)
-);
+-- CREATE TABLE RideHistory (
+--     rideHistoryId VARCHAR(50) PRIMARY KEY,
+--     userId int NOT NULL,
+--     FOREIGN KEY (userId) REFERENCES Users(userId)
+-- );
 
 -- Ride table
 CREATE TABLE Ride (
@@ -73,13 +73,13 @@ CREATE TABLE Ride (
 );
 
 -- Add rides to rideHistory
-CREATE TABLE RideHistoryRides (
-    rideHistoryId VARCHAR(50) NOT NULL,
-    rideId int NOT NULL,
-    PRIMARY KEY (rideHistoryId, rideId),
-    FOREIGN KEY (rideHistoryId) REFERENCES RideHistory(rideHistoryId),
-    FOREIGN KEY (rideId) REFERENCES Ride(rideId)
-);
+-- CREATE TABLE RideHistoryRides (
+--     rideHistoryId VARCHAR(50) NOT NULL,
+--     rideId int NOT NULL,
+--     PRIMARY KEY (rideHistoryId, rideId),
+--     FOREIGN KEY (rideHistoryId) REFERENCES RideHistory(rideHistoryId),
+--     FOREIGN KEY (rideId) REFERENCES Ride(rideId)
+-- );
 
 -- Payment table
 CREATE TABLE Payment (
@@ -102,49 +102,55 @@ ADD CONSTRAINT fk_payment
 FOREIGN KEY (paymentId) REFERENCES Payment(paymentId);
 
 -- RidePlanner table
-CREATE TABLE RidePlanner (
-    ridePlannerId VARCHAR(50) PRIMARY KEY,
-    activeRides int REFERENCES Ride(rideId),
-    activeDrivers int REFERENCES Driver(driverId),
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- CREATE TABLE RidePlanner (
+--     ridePlannerId VARCHAR(50) PRIMARY KEY,
+--     activeRides int REFERENCES Ride(rideId),
+--     activeDrivers int REFERENCES Driver(driverId),
+--     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
 
 -- Service for calculating and assigning drivers to rides
-CREATE TABLE DriverAssignment (
-    assignmentId VARCHAR(50) PRIMARY KEY,
-    ridePlannerId VARCHAR(50) NOT NULL,
-    rideId int NOT NULL,
-    driverId int NOT NULL,
-    scheduledPickupLocation VARCHAR(255) NOT NULL,
-    estimatedArrivalTime TIMESTAMP,
-    isCompleted BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (ridePlannerId) REFERENCES RidePlanner(ridePlannerId),
-    FOREIGN KEY (rideId) REFERENCES Ride(rideId),
-    FOREIGN KEY (driverId) REFERENCES Driver(driverId)
-);
+-- CREATE TABLE DriverAssignment (
+--     assignmentId VARCHAR(50) PRIMARY KEY,
+--     ridePlannerId VARCHAR(50) NOT NULL,
+--     rideId int NOT NULL,
+--     driverId int NOT NULL,
+--     scheduledPickupLocation VARCHAR(255) NOT NULL,
+--     estimatedArrivalTime TIMESTAMP,
+--     isCompleted BOOLEAN DEFAULT FALSE,
+--     FOREIGN KEY (ridePlannerId) REFERENCES RidePlanner(ridePlannerId),
+--     FOREIGN KEY (rideId) REFERENCES Ride(rideId),
+--     FOREIGN KEY (driverId) REFERENCES Driver(driverId)
+-- );
 
 -- ShuttleRide extends Ride
 CREATE TABLE ShuttleRide (
-    rideId int PRIMARY KEY,
+    id int auto_increment PRIMARY KEY,
+    startLocation Varchar(25),
+    endLocation Varchar(25),
     maxPassengers INT NOT NULL DEFAULT 8,
-    availableSeats INT NOT NULL DEFAULT 8,
-    route VARCHAR(255) NOT NULL,
-    startTime TIMESTAMP NOT NULL,
-    shuttleArrivalTime VARCHAR(50), -- Changed from TIMESTAMP to VARCHAR
-    pricePerSeatFactor DECIMAL(3, 2) DEFAULT 0.75, -- Discount factor for shared rides
-    FOREIGN KEY (rideId) REFERENCES Ride(rideId)
+    price float
+);
+CREATE TABLE scheduledRides (
+    shuttleId INT,
+    userId INT,
+    PRIMARY KEY (shuttleId, userId),
+    FOREIGN KEY (shuttleId)
+        REFERENCES ShuttleRide (id),
+    FOREIGN KEY (userId)
+        REFERENCES users (userId)
 );
 
 -- ShuttleRide_Passengers junction table
-CREATE TABLE ShuttleRide_Passengers (
-    shuttleRideId int NOT NULL,
-    userId int NOT NULL,
-    pickupLocation VARCHAR(255) NOT NULL,
-    dropoffLocation VARCHAR(255) NOT NULL,
-    PRIMARY KEY (shuttleRideId, userId),
-    FOREIGN KEY (shuttleRideId) REFERENCES ShuttleRide(rideId),
-    FOREIGN KEY (userId) REFERENCES Users(userId)
-);
+-- CREATE TABLE ShuttleRide_Passengers (
+--     shuttleRideId int NOT NULL,
+--     userId int NOT NULL,
+--     pickupLocation VARCHAR(255) NOT NULL,
+--     dropoffLocation VARCHAR(255) NOT NULL,
+--     PRIMARY KEY (shuttleRideId, userId),
+--     FOREIGN KEY (shuttleRideId) REFERENCES ShuttleRide(rideId),
+--     FOREIGN KEY (userId) REFERENCES Users(userId)
+-- );
 
 -- Add indexes for performance
 CREATE INDEX idx_user_email ON Users(email);

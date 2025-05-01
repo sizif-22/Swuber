@@ -7,18 +7,18 @@ public class ShuttleRide extends Ride {
     private List<User> passengers;
     private int maxPassengers;
     private int availableSeats;
-    private String route;
+    // private String route;
     private String startTime;
     private String shuttleArrivalTime;
     private float price;
 
-    public ShuttleRide(User initialUser, String startLocation, String endLocation, int maxPassengers, String route, String startTime, float price) {
+    public ShuttleRide(User initialUser, String startLocation, String endLocation, int maxPassengers, String startTime, float price) {
         super(initialUser, startLocation, endLocation);
         this.passengers = new ArrayList<>();
         this.passengers.add(initialUser);
         this.maxPassengers = maxPassengers;
         this.availableSeats = maxPassengers - 1;
-        this.route = route;
+        // this.route = route;
         this.startTime = startTime;
         this.shuttleArrivalTime = "";
         this.price = price;
@@ -45,9 +45,9 @@ public class ShuttleRide extends Ride {
         return maxPassengers;
     }
 
-    public String getRoute() {
-        return route;
-    }
+    // public String getRoute() {
+    //     return route;
+    // }
 
     public String getStartTime() {
         return startTime;
