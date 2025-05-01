@@ -82,22 +82,54 @@ public class User {
 		return this.rideHistory;
 	}
 
-	public void addCard(String cardName, String cardNumber, String expirationDate, String cardHolderName) {
-		Card newCard = new Card(cardName, cardNumber, expirationDate, cardHolderName);
+	public void addCard(String cardName, String cardNumber, String expirationDate, String cardHolderName)
+			throws SQLException {
+		String sql = "insert into card (cardName ,cardNumber,expirationDate, cardHolderName,userId) values ('"
+				+ cardName + "','" + cardNumber + "','" + expirationDate + "','" + cardHolderName + "'," + userId
+				+ ");";
+		dbConnect.statement.executeUpdate(sql);
+		String sql2 = "select cardId from Card order by cardId desc limit 1";
+		ResultSet rs = dbConnect.statement.executeQuery(sql2);
+		rs.next();
+		Card newCard = new Card(cardName, cardNumber, expirationDate, cardHolderName, userId, dbConnect);
+		newCard.cardId = rs.getInt("cardId");
 		savedPaymentOptions.add(newCard);
 		System.out.println("Card added successfully: " + newCard.getCard());
 	}
 
-	public void removeCard(String cardName) {
+	public void removeCard(String cardName) throws SQLException {
 		for (Card card : savedPaymentOptions) {
 			if (card.getCardName().equalsIgnoreCase(cardName)) {
+				String sql = "delete from card where cardId = " + card.cardId;
+				dbConnect.statement.executeUpdate(sql);
 				savedPaymentOptions.remove(card);
 				break;
 			}
 		}
 	}
 
-	public List<Card> getCards() {
+	public void loadCardsFromDB() throws SQLException {
+		if (dbConnect == null) {
+			System.err.println("Database connection not initialized.");
+			return;
+		}
+		savedPaymentOptions.clear();
+		ResultSet resultSet = dbConnect.statement.executeQuery("select * from card where userId = " + userId + ";");
+		while (resultSet.next()) {
+			int cardId = resultSet.getInt("cardId");
+			int userId = resultSet.getInt("userId");
+			String cardName = resultSet.getString("cardName");
+			String cardNumber = resultSet.getString("cardNumber");
+			String expirationDate = resultSet.getString("expirationDate");
+			String cardHolderName = resultSet.getString("cardHolderName");
+			Card newCard = new Card(cardName, cardNumber, expirationDate, cardHolderName, userId, dbConnect);
+			newCard.cardId = cardId;
+			savedPaymentOptions.add(newCard);
+		}
+	}
+
+	public List<Card> getCards() throws SQLException {
+		loadCardsFromDB();
 		return savedPaymentOptions;
 	}
 

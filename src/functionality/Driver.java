@@ -2,7 +2,7 @@ package functionality;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.List;
 
 import db.DBConfig;
@@ -15,7 +15,7 @@ public class Driver {
     private int completedRides;
     // private Vehicle vehicle;
     private int vehicleId;
-    private static List<Driver> allDrivers = new ArrayList<>();
+    // private static List<Driver> allDrivers = new ArrayList<>();
     private float rating;
     private boolean isAvailable;
     private static DBConfig dbConnect;
@@ -25,10 +25,9 @@ public class Driver {
         this.name = name;
         this.location = location;
         this.vehicleId = vehicleId;
-        // this.vehicle = getVehicle();
-        this.completedRides = 0;
-        this.rating = 5.0f;
-        this.isAvailable = true;
+        this.completedRides = completedRides;
+        this.rating = rating;
+        this.isAvailable = isAvailable;
         this.rideHistory = new RideHistory();
         Driver.dbConnect = dbConnect;
         // allDrivers.add(this);
@@ -67,16 +66,21 @@ public class Driver {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(String location) throws SQLException {
+        String state = "update driver set location ='" + location + "' where driverId = " + driverId + ";";
+        System.out.println(state);
+        dbConnect.statement.executeUpdate(state);
         this.location = location;
     }
 
-    public static List<Driver> getAllDrivers() {
-        return allDrivers;
-    }
+    // public static List<Driver> getAllDrivers() {
+    // return allDrivers;
+    // }
+
     public RideHistory getRideHistory() {
         return rideHistory;
     }
+
     public Vehicle getVehicle() throws SQLException {
         System.out.println("vid : " + vehicleId);
         String state = "select * from Vehicle where vehicleId=" + vehicleId + " limit 1;";
@@ -96,13 +100,14 @@ public class Driver {
             throw new SQLException("No vehicle found with ID: " + vehicleId);
         }
     }
+
     public String getVehicleInfo() throws SQLException {
         Vehicle vehicle = getVehicle();
         return vehicle.getColor() + " " + vehicle.getVehicleModel() + " " + "License Plate: " + vehicle.getLicenseNo();
     }
 
     // public void setVehicle(Vehicle vehicle) {
-    //     this.vehicle = vehicle;
+    // this.vehicle = vehicle;
     // }
 
     public boolean isAvailable() {
@@ -110,7 +115,7 @@ public class Driver {
     }
 
     public void setAvailable(boolean available) throws SQLException {
-        String state = "update driver set isAvailable =" + available + ";";
+        String state = "update driver set isAvailable =" + available + " where driverId = " + driverId + ";";
         dbConnect.statement.executeUpdate(state);
         isAvailable = available;
     }
@@ -119,19 +124,32 @@ public class Driver {
         return rating;
     }
 
-    public void updateRating(float newRating) {
+    public void updateRating(float newRating) throws SQLException {
+        System.out.println(newRating);
         if (newRating >= 0 && newRating <= 5) {
-            this.rating = (this.rating * completedRides + newRating) / (completedRides + 1);
+            float r = (this.rating * completedRides + newRating) / (completedRides + 1);
+            String state = "update driver set rating ='" + r + "' where driverId = " + driverId + ";";
+            dbConnect.statement.executeUpdate(state);
+            this.rating = r;
         }
     }
 
     public void markRideAsComplete(Ride ride) throws SQLException {
-        if (ride != null && ride.getStatus().equals("PAID")) {
-            this.completedRides++;
-            this.rideHistory.addRide(ride);
-            this.setLocation(ride.getEndLocation());
-            setAvailable(true);
-        }
+        System.out.println("Ride completed ...");
+        // if (ride != null && ride.getStatus().equals("PAID")) {
+        System.out.println(ride.getStatus());
+        this.completedRides++;
+        String state = "update driver set completedRides =" + completedRides + " where driverId = " + driverId
+                + ";";
+        dbConnect.statement.executeUpdate(state);
+        this.rideHistory.addRide(ride);
+        this.updateRating(ride.getRating());
+        this.setLocation(ride.getEndLocation());
+        this.setAvailable(true);
+        System.out.println("completedRides: " + completedRides);
+        System.out.println("location: " + location);
+        System.out.println("isAvailable: " + isAvailable);
+        // }
     }
 
     public int getCompletedRides() {

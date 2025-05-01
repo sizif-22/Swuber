@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import functionality.*;
 import gui.Frame;
 
@@ -63,7 +65,11 @@ public class BookRideCard extends JPanel {
 					public void actionPerformed(ActionEvent e) {
 							ShuttleRide ride = new ShuttleRide(user, startLocation, endLocation, maxPassengers, route, "10:00 AM",
 											price); 
-							frame.gotoPaymentPanel(user, ride);
+							try {
+								frame.gotoPaymentPanel(user, ride);
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							}
 					}
 			});
 

@@ -1,6 +1,7 @@
 package functionality;
 
 import java.util.Random;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Ride {
@@ -50,13 +51,15 @@ public class Ride {
 	}
 
 	public void completeRide() {
-			this.status = STATUS_COMPLETED;
+		this.status = STATUS_COMPLETED;
 	}
 
-	public void rateRide(float rating) {
+	public void rateRide(float rating, Driver driver) throws SQLException {
 		if (rating >= 0.0f && rating <= 5.0f) {
 			this.rating = rating;
+			// driver.updateRating(rating);
 		}
+
 	}
 
 	public float getRating() {

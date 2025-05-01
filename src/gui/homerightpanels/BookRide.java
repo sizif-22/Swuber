@@ -17,7 +17,7 @@ public class BookRide extends JPanel {
 		this.frame = frame;
 		this.user = user;
 
-		System.out.println("Drivers in System: " + Driver.getAllDrivers().size());
+		System.out.println("Drivers in System: " + RidePlanner.getAllDrivers().size());
 
 		setBounds(300, 0, 900, 800);
 		setBackground(new Color(55, 55, 55));

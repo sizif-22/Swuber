@@ -21,7 +21,7 @@ public class RideCompletedPanel extends JPanel {
     this.user = user;
 
     setBounds(300, 0, 900, 800);
-    setBackground(new Color(55,55,55));
+    setBackground(new Color(55, 55, 55));
 
     setLayout(null);
 
@@ -69,9 +69,10 @@ public class RideCompletedPanel extends JPanel {
                 JOptionPane.ERROR_MESSAGE);
             return; // Stop further execution
           }
-          ride.rateRide(rating);
+          ride.rateRide(rating, driver);
           ride.completeRide();
-          ride.getDriver().markRideAsComplete(ride);
+          driver.markRideAsComplete(ride);
+          // driver.setLocation(ride.getEndLocation());
           user.addRideToHistory(ride);
           JOptionPane.showMessageDialog(null, "Driver rating submitted successfully!",
               "Rating Submitted", JOptionPane.INFORMATION_MESSAGE);

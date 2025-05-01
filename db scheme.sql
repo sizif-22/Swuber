@@ -37,7 +37,7 @@ CREATE TABLE Driver (
 
 -- Card table
 CREATE TABLE Card (
-    cardId VARCHAR(50) PRIMARY KEY,
+    cardId int PRIMARY KEY auto_increment,
     cardName VARCHAR(100) NOT NULL,
     cardNumber VARCHAR(19) NOT NULL, -- 16 digits plus possible spaces
     expirationDate VARCHAR(7) NOT NULL, -- MM/YYYY
@@ -86,7 +86,7 @@ CREATE TABLE Payment (
     paymentId VARCHAR(50) PRIMARY KEY,
     rideId VARCHAR(50) NOT NULL,
     userId int NOT NULL,
-    cardId VARCHAR(50),
+    cardId int,
     cost DECIMAL(10, 2) NOT NULL,
     discountCode VARCHAR(50),
     isProcessed BOOLEAN DEFAULT FALSE,
@@ -102,12 +102,12 @@ ADD CONSTRAINT fk_payment
 FOREIGN KEY (paymentId) REFERENCES Payment(paymentId);
 
 -- RidePlanner table
--- CREATE TABLE RidePlanner (
---     ridePlannerId VARCHAR(50) PRIMARY KEY,
---     activeRides VARCHAR(50) REFERENCES Ride(rideId),
---     activeDrivers int REFERENCES Driver(driverId),
---     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
+CREATE TABLE RidePlanner (
+    ridePlannerId VARCHAR(50) PRIMARY KEY,
+    activeRides VARCHAR(50) REFERENCES Ride(rideId),
+    activeDrivers int REFERENCES Driver(driverId),
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Service for calculating and assigning drivers to rides
 CREATE TABLE DriverAssignment (

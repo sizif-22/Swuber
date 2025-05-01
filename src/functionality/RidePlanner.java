@@ -9,7 +9,7 @@ import db.DBConfig;
 
 public class RidePlanner {
 	private List<Ride> activeRides;
-	private List<Driver> allDrivers;
+	private static List<Driver> allDrivers;
 	private static DBConfig dbConnect;
 
 	public RidePlanner() {
@@ -57,6 +57,9 @@ public class RidePlanner {
 			}
 		}
 		return availableDrivers;
+	}
+	public static List<Driver> getAllDrivers(){
+		return allDrivers;
 	}
 
 	// public Driver matchDriverToRide(Ride ride) {

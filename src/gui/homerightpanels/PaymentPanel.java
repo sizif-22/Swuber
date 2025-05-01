@@ -2,6 +2,7 @@ package gui.homerightpanels;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.List;
 import javax.swing.*;
 import functionality.*;
@@ -15,7 +16,7 @@ public class PaymentPanel extends JPanel {
     private Frame frame;
     private JPanel cardsPanel;
 
-    public PaymentPanel(Frame frame, User user, Ride ride) {
+    public PaymentPanel(Frame frame, User user, Ride ride) throws SQLException {
         this.user = user;
         this.ride = ride;
         this.frame = frame;
@@ -127,7 +128,7 @@ public class PaymentPanel extends JPanel {
         
     }
 
-    public void refreshCards() {
+    public void refreshCards() throws SQLException {
         
         cardsPanel.removeAll();
         int counter=0;

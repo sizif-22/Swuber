@@ -24,6 +24,7 @@ public class Frame extends JFrame {
         Vehicle.setDBConnect(db);
         Driver.setDBConnect(db);
         RidePlanner.setDBConnect(db);
+        Card.setDBConnect(db);
         ImageIcon img = new ImageIcon(Frame.class.getResource("../swuber.jpg"));
         setIconImage(img.getImage());
         planner = new RidePlanner();
@@ -96,7 +97,7 @@ public class Frame extends JFrame {
         currentPanel.repaint();
     }
 
-    public void gotoPaymentPanel(User user, Ride ride) {
+    public void gotoPaymentPanel(User user, Ride ride) throws SQLException {
         currentPanel.removeAll();
         currentPanel.add(new PaymentPanel(this, user, ride), BorderLayout.CENTER);
         currentPanel.revalidate();
