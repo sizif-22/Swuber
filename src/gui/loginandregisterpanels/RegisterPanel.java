@@ -1,19 +1,17 @@
 package gui.loginandregisterpanels;
 
 import javax.swing.*;
-
 import functionality.User;
-
 import java.awt.*;
+import java.sql.SQLException;
 import gui.Frame;
-
 public class RegisterPanel extends JPanel {
     private Frame mainFrame;
 
     public RegisterPanel(Frame frame) {
         this.mainFrame = frame;
         setBounds(300, 0, 900, 800);
-        setBackground(new Color(55,55,55));
+        setBackground(new Color(55, 55, 55));
         setLayout(null);
 
         // Admin Log In Label
@@ -110,7 +108,16 @@ public class RegisterPanel extends JPanel {
                 return;
             }
 
-            User.register(name, email, phoneNumber, password);
+            try {
+                User.register(name, email, phoneNumber, password);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            // try {
+            //     frame.db.addUser(name, email, phoneNumber, password);
+            // } catch (SQLException e1) {
+            //     e1.printStackTrace();
+            // }
 
             nameField.setText("");
             emailField.setText("");
@@ -132,7 +139,7 @@ public class RegisterPanel extends JPanel {
         add(haveAccountBtn);
 
         haveAccountBtn.addActionListener(e -> {
-            mainFrame.setPanel(mainFrame.loginPanel); 
+            mainFrame.setPanel(mainFrame.loginPanel);
         });
     }
 }

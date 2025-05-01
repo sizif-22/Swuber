@@ -2,7 +2,7 @@ package gui.loginandregisterpanels;
 
 import java.awt.Color;
 import java.awt.Font;
-
+import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
 
 import functionality.User;
 import gui.Frame;
@@ -99,12 +100,17 @@ public class LoginPanel extends JPanel {
                 return;
             }
 
-            User loggedInUser = User.login(email, password);
-            if (loggedInUser != null) {
-                JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                mainFrame.gotoHomePanels(loggedInUser);
-            } else {
-                JOptionPane.showMessageDialog(LoginPanel.this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
+            User loggedInUser;
+            try {
+                loggedInUser = User.login(email, password);
+                if (loggedInUser != null) {
+                    JOptionPane.showMessageDialog(LoginPanel.this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    mainFrame.gotoHomePanels(loggedInUser);
+                } else {
+                    JOptionPane.showMessageDialog(LoginPanel.this, "Invalid email or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
         });
     }

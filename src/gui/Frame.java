@@ -1,11 +1,7 @@
 package gui;
-
 import java.awt.*;
-
-
 import javax.swing.*;
-
-
+import db.*;
 import functionality.*;
 import gui.homerightpanels.*;
 import gui.loginandregisterpanels.*;
@@ -17,6 +13,7 @@ public class Frame extends JFrame {
     public LoginPanel loginPanel; 
     public RegisterPanel registerPanel; 
     public static RidePlanner planner;
+    public DBConfig db = new DBConfig();
 
     public Frame() {
         ImageIcon img = new ImageIcon(Frame.class.getResource("../swuber.jpg"));
@@ -29,6 +26,9 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
+        
+        // Initialize the database connection in User class
+        User.setDBConnect(db);
 
         leftPanel = new LeftPanel(this);
         currentPanel = new JPanel(new BorderLayout());
@@ -39,7 +39,6 @@ public class Frame extends JFrame {
 
         loginPanel = new LoginPanel(this);
         registerPanel = new RegisterPanel(this);
-
         setPanel(loginPanel);
 
         setVisible(true);

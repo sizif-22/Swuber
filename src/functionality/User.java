@@ -1,17 +1,11 @@
 package functionality;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
+import java.util.*;
+import java.sql.*;
 import javax.swing.JOptionPane;
+import db.*;
 
 public class User {
-	private static final String USER_FILE_PATH = "./users.txt"; 
 	private static int userIdCounter = 1;
 	private int userId;
 	private String name;
@@ -21,8 +15,9 @@ public class User {
 	private RideHistory rideHistory;
 	private List<Card> savedPaymentOptions;
 	private static List<User> registeredUsers = new ArrayList<>();
+	private static DBConfig dbConnect;
 
-	public User(String name, String email, String phoneNumber, String password) {
+	public User(String name, String email, String phoneNumber, String password, DBConfig dbConnect) {
 		this.userId = userIdCounter++;
 		this.name = name;
 		this.email = email;
@@ -30,23 +25,24 @@ public class User {
 		this.password = password;
 		this.rideHistory = new RideHistory();
 		this.savedPaymentOptions = new ArrayList<>();
+		User.dbConnect = dbConnect;
 	}
 
 	public Ride requestRide(RidePlanner planner, String startLocation, String destination) {
 		Ride ride = new Ride(this, startLocation, destination);
 		Driver matchedDriver = planner.matchDriverToRide(ride);
 		if (matchedDriver != null) {
-				ride.setDriver(matchedDriver);
-				ride.setVehicle(matchedDriver.getVehicle()) ;
-				ride.setStatus("ACCEPTED");
-				planner.addRide(ride);
-		}else{
+			ride.setDriver(matchedDriver);
+			ride.setVehicle(matchedDriver.getVehicle());
+			ride.setStatus("ACCEPTED");
+			planner.addRide(ride);
+			ride.setStatus("PENDING");
+			return ride;
+		} else {
 			System.out.println("No available drivers for the requested location.");
 			return null;
 		}
-		ride.setStatus("PENDING") ;
-		return ride;
-} //A: no error handling here if no matched driver - this will cause runtime errors
+	}
 
 	public void addRideToHistory(Ride ride) {
 		if (ride != null && "COMPLETED".equals(ride.getStatus())) {
@@ -97,78 +93,77 @@ public class User {
 		}
 	}
 
-	public List<Card> getCards(){
+	public List<Card> getCards() {
 		return savedPaymentOptions;
 	}
 
-public static void register(String name, String email, String phoneNumber, String password) {
-        loadUsersFromFile(); // Load existing users
-
-        for (User user : registeredUsers) {
-            if (user.email.equalsIgnoreCase(email)) {
-                JOptionPane.showMessageDialog(null, "A user with this email already exists.", "Error", JOptionPane.ERROR_MESSAGE);
-                return; // Stop registration if email exists
-            }
-        }
-
-        User newUser = new User(name, email, phoneNumber, password);
-        registeredUsers.add(newUser);
-        writeUserToFile(newUser);
-
-        JOptionPane.showMessageDialog(null, "User registered successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private static void writeUserToFile(User user) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE_PATH, true))) {
-            writer.write(user.userId + "," + user.name + "," + user.email + "," + user.phoneNumber + "," + user.password);
-            writer.newLine();
-        } catch (IOException e) {
-            System.err.println("Error writing user data to file: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error writing user data to file", "Error", JOptionPane.ERROR_MESSAGE); // Show error message
-        }
-    }
-
-    private static void loadUsersFromFile() {
-        registeredUsers.clear();
-        try (Scanner scanner = new Scanner(new File(USER_FILE_PATH))) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] userData = line.split(",");
-                if (userData.length == 5) {
-                    try {
-                        User user = new User(userData[1], userData[2], userData[3], userData[4]);
-                        user.userId = Integer.parseInt(userData[0]);
-                        registeredUsers.add(user);
-                    } catch (NumberFormatException ex) {
-                        System.err.println("Invalid user ID format in file: " + line);
-                    }
-                } else {
-                    System.err.println("Invalid user data format in file: " + line);
-                }
-            }
-        } catch (IOException e) {
-            // Handle file not found exception gracefully
-            System.err.println("Error loading user data from file: " + e.getMessage());
-
-        }
-    }
-
-		public static User login(String email, String password) {
-			loadUsersFromFile(); // Load users from file before login attempt
-
-			for (User user : registeredUsers) {
-					if (user.email.equalsIgnoreCase(email) && user.password.equals(password)) {
-							System.out.println("Login successful. Welcome, " + user.name + "!");
-							return user;
-					}
-			}
-
-			System.out.println("Invalid email or password.");
-			return null;
+	public static void setDBConnect(DBConfig dbConfig) {
+		dbConnect = dbConfig;
 	}
 
-        public static void main(String[] args) {
-        User.register("test", "test@gmail.com", "01111111111", "test");
-        User.login("test@gmail.com", "test");
-    }
+	public static void register(String name, String email, String phoneNumber, String password) throws SQLException {
+		if (dbConnect == null) {
+			JOptionPane.showMessageDialog(null, "Database connection not initialized.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		loadUsersFromDB();
+		for (User user : registeredUsers) {
+			if (user.email.equalsIgnoreCase(email)) {
+				JOptionPane.showMessageDialog(null, "A user with this email already exists.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		User newUser = new User(name, email, phoneNumber, password, dbConnect);
+		registeredUsers.add(newUser);
+		dbConnect.addUser(name, email, phoneNumber, password);
+
+		JOptionPane.showMessageDialog(null, "User registered successfully.", "Success",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private static void loadUsersFromDB() throws SQLException {
+		if (dbConnect == null) {
+			System.err.println("Database connection not initialized.");
+			return;
+		}
+
+		registeredUsers.clear();
+		ResultSet resultSet = dbConnect.statement.executeQuery("select * from Users;");
+		while (resultSet.next()) {
+			int id = resultSet.getInt("userId");
+			String userName = resultSet.getString("name");
+			String userEmail = resultSet.getString("email");
+			String userPassword = resultSet.getString("password");
+			String userPhoneNumber = resultSet.getString("phoneNumber");
+			User user = new User(userName, userEmail, userPhoneNumber, userPassword, dbConnect);
+			user.userId = id;
+			registeredUsers.add(user);
+			System.out.println(
+					"user: " + id + " " + userName + " " + userEmail + " " + userPhoneNumber + " " + userPassword);
+		}
+	}
+
+	public static User login(String email, String password) throws SQLException {
+		if (dbConnect == null) {
+			JOptionPane.showMessageDialog(null, "Database connection not initialized.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+		loadUsersFromDB();
+
+		for (User user : registeredUsers) {
+			if (user.email.equalsIgnoreCase(email) && user.password.equals(password)) {
+				System.out.println("Login successful. Welcome, " + user.name + "!");
+				return user;
+			}
+		}
+
+		System.out.println("Invalid email or password.");
+		return null;
+	}
 }
