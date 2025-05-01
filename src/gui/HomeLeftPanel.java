@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import javax.swing.*;
 import functionality.*;
 
@@ -29,7 +31,13 @@ public class HomeLeftPanel extends JPanel {
         // Configure buttons
         configureButton(createButton("Book a Ride", 200), e -> mainFrame.gotoBookRidePanel(currentUser));
         configureButton(createButton("Swuber Shuttle", 270), e -> mainFrame.gotoSwuberShuttlePanel(currentUser)); 
-        configureButton(createButton("Ride History", 340), e -> mainFrame.gotoRideHistoryPanel(currentUser));
+        configureButton(createButton("Ride History", 340), e -> {
+            try {
+                mainFrame.gotoRideHistoryPanel(currentUser);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
         configureButton(createButton("Scheduled", 410), e -> mainFrame.gotoScheduled(currentUser)); 
 
         // User Info

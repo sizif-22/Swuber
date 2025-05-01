@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import functionality.*;
+import db.DBConfig;
 
 public class RideCompletedPanel extends JPanel {
 
@@ -14,11 +15,13 @@ public class RideCompletedPanel extends JPanel {
   private Driver driver;
   private JFormattedTextField tf;
   private User user;
+  private DBConfig dbConnect;
 
-  public RideCompletedPanel(User user, Ride ride, Driver driver) {
+  public RideCompletedPanel(User user, Ride ride, Driver driver , DBConfig dbConnect) {
     this.ride = ride;
     this.driver = driver;
     this.user = user;
+    this.dbConnect = dbConnect; // Get a singleton instance of DBConfig
 
     setBounds(300, 0, 900, 800);
     setBackground(new Color(55, 55, 55));
@@ -69,20 +72,30 @@ public class RideCompletedPanel extends JPanel {
                 JOptionPane.ERROR_MESSAGE);
             return; // Stop further execution
           }
-          ride.rateRide(rating, driver);
           ride.completeRide();
+          System.out.println("1 done");
+          ride.rateRide(rating, driver);
+          System.out.println("2 done");
           driver.markRideAsComplete(ride);
-          // driver.setLocation(ride.getEndLocation());
-          user.addRideToHistory(ride);
+          System.out.println("3 done");
+          
+          // Set the DBConfig instance for RideHistory before adding the ride
+          RideHistory.setDBConnect(dbConnect);
+          RideHistory.addRide(ride);
+          
+          System.out.println("4 done");
           JOptionPane.showMessageDialog(null, "Driver rating submitted successfully!",
               "Rating Submitted", JOptionPane.INFORMATION_MESSAGE);
         } catch (NullPointerException ex) {
+          ex.printStackTrace(); // Add this for better debugging
           JOptionPane.showMessageDialog(null, "Please enter a rating.", "Invalid Rating", JOptionPane.ERROR_MESSAGE);
         } catch (ClassCastException ex) {
+          ex.printStackTrace(); // Add this for better debugging
           JOptionPane.showMessageDialog(null, "Invalid rating format. Please enter a number.", "Invalid Rating",
               JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e1) {
           e1.printStackTrace();
+          System.out.println(e1);
         }
       }
     });

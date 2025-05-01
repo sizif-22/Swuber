@@ -2,12 +2,13 @@ package gui.homerightpanels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 import functionality.Ride;
 import functionality.User;
 
 public class PreviousRides extends JPanel{
-    public PreviousRides(Frame frame, User user){
+    public PreviousRides(Frame frame, User user) throws SQLException{
         setBounds(300, 0, 900, 800);
         setBackground(new Color(55,55,55));
 

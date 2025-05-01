@@ -57,13 +57,17 @@ public class Ride {
 	public void rateRide(float rating, Driver driver) throws SQLException {
 		if (rating >= 0.0f && rating <= 5.0f) {
 			this.rating = rating;
-			// driver.updateRating(rating);
+
 		}
 
 	}
 
 	public float getRating() {
 		return this.rating;
+	}
+
+	public void setRating(float rating) {
+		this.rating = rating;
 	}
 
 	public int getRideID() {

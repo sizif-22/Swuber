@@ -7,7 +7,7 @@ import db.*;
 
 public class User {
 	// private static int userIdCounter = 1;
-	private int userId;
+	int userId;
 	private String name;
 	private String email;
 	private String phoneNumber;
@@ -23,7 +23,7 @@ public class User {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.password = password;
-		this.rideHistory = new RideHistory();
+		this.rideHistory = new RideHistory(this, null, dbConnect);
 		this.savedPaymentOptions = new ArrayList<>();
 		User.dbConnect = dbConnect;
 	}
@@ -48,11 +48,11 @@ public class User {
 		}
 	}
 
-	public void addRideToHistory(Ride ride) {
-		if (ride != null && "COMPLETED".equals(ride.getStatus())) {
-			this.rideHistory.addRide(ride);
-		}
-	}
+	// public void addRideToHistory(Ride ride) {
+	// if (ride != null && "COMPLETED".equals(ride.getStatus())) {
+	// this.rideHistory.addRide(ride);
+	// }
+	// }
 
 	public String getName() {
 		return this.name;
@@ -200,5 +200,23 @@ public class User {
 
 		System.out.println("Invalid email or password.");
 		return null;
+	}
+
+	public static User getUser(int userId) throws SQLException {
+		String sql = "select * from users where userId = " + userId + ";";
+		ResultSet resultSet = dbConnect.statement.executeQuery(sql);
+		if (resultSet.next()) {
+
+			int id = resultSet.getInt("userId");
+			String userName = resultSet.getString("name");
+			String userEmail = resultSet.getString("email");
+			String userPassword = resultSet.getString("password");
+			String userPhoneNumber = resultSet.getString("phoneNumber");
+			User user = new User(userName, userEmail, userPhoneNumber, userPassword, dbConnect);
+			user.userId = id;
+			return user;
+		} else {
+			return null;
+		}
 	}
 }

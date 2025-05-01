@@ -25,6 +25,7 @@ public class Frame extends JFrame {
         Driver.setDBConnect(db);
         RidePlanner.setDBConnect(db);
         Card.setDBConnect(db);
+        RideHistory.setDBConnect(db);
         ImageIcon img = new ImageIcon(Frame.class.getResource("../swuber.jpg"));
         setIconImage(img.getImage());
         planner = new RidePlanner();
@@ -105,7 +106,7 @@ public class Frame extends JFrame {
     }
 
     public void gotoRideCompletedPanel(User user, Ride ride, Driver driver) {
-        setPanel(new RideCompletedPanel(user, ride, driver));
+        setPanel(new RideCompletedPanel(user, ride, driver, db));
     }
 
     public void gotoBookRidePanel(User user) {
@@ -120,7 +121,7 @@ public class Frame extends JFrame {
         setPanel(new BookedShuttleBuses(this, user));
     }
 
-    public void gotoRideHistoryPanel(User user) {
+    public void gotoRideHistoryPanel(User user) throws SQLException {
         setPanel(new PreviousRides(this, user));
     }
 

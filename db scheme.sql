@@ -55,7 +55,7 @@ CREATE TABLE RideHistory (
 
 -- Ride table
 CREATE TABLE Ride (
-    rideId VARCHAR(50) PRIMARY KEY,
+    rideId int auto_increment PRIMARY KEY,
     userId int NOT NULL,
     driverId int,
     vehicleId int,
@@ -75,7 +75,7 @@ CREATE TABLE Ride (
 -- Add rides to rideHistory
 CREATE TABLE RideHistoryRides (
     rideHistoryId VARCHAR(50) NOT NULL,
-    rideId VARCHAR(50) NOT NULL,
+    rideId int NOT NULL,
     PRIMARY KEY (rideHistoryId, rideId),
     FOREIGN KEY (rideHistoryId) REFERENCES RideHistory(rideHistoryId),
     FOREIGN KEY (rideId) REFERENCES Ride(rideId)
@@ -84,7 +84,7 @@ CREATE TABLE RideHistoryRides (
 -- Payment table
 CREATE TABLE Payment (
     paymentId VARCHAR(50) PRIMARY KEY,
-    rideId VARCHAR(50) NOT NULL,
+    rideId int NOT NULL,
     userId int NOT NULL,
     cardId int,
     cost DECIMAL(10, 2) NOT NULL,
@@ -104,7 +104,7 @@ FOREIGN KEY (paymentId) REFERENCES Payment(paymentId);
 -- RidePlanner table
 CREATE TABLE RidePlanner (
     ridePlannerId VARCHAR(50) PRIMARY KEY,
-    activeRides VARCHAR(50) REFERENCES Ride(rideId),
+    activeRides int REFERENCES Ride(rideId),
     activeDrivers int REFERENCES Driver(driverId),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -113,7 +113,7 @@ CREATE TABLE RidePlanner (
 CREATE TABLE DriverAssignment (
     assignmentId VARCHAR(50) PRIMARY KEY,
     ridePlannerId VARCHAR(50) NOT NULL,
-    rideId VARCHAR(50) NOT NULL,
+    rideId int NOT NULL,
     driverId int NOT NULL,
     scheduledPickupLocation VARCHAR(255) NOT NULL,
     estimatedArrivalTime TIMESTAMP,
@@ -125,7 +125,7 @@ CREATE TABLE DriverAssignment (
 
 -- ShuttleRide extends Ride
 CREATE TABLE ShuttleRide (
-    rideId VARCHAR(50) PRIMARY KEY,
+    rideId int PRIMARY KEY,
     maxPassengers INT NOT NULL DEFAULT 8,
     availableSeats INT NOT NULL DEFAULT 8,
     route VARCHAR(255) NOT NULL,
@@ -137,7 +137,7 @@ CREATE TABLE ShuttleRide (
 
 -- ShuttleRide_Passengers junction table
 CREATE TABLE ShuttleRide_Passengers (
-    shuttleRideId VARCHAR(50) NOT NULL,
+    shuttleRideId int NOT NULL,
     userId int NOT NULL,
     pickupLocation VARCHAR(255) NOT NULL,
     dropoffLocation VARCHAR(255) NOT NULL,

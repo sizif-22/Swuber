@@ -14,7 +14,7 @@ public class Driver {
     private RideHistory rideHistory;
     private int completedRides;
     // private Vehicle vehicle;
-    private int vehicleId;
+    int vehicleId;
     // private static List<Driver> allDrivers = new ArrayList<>();
     private float rating;
     private boolean isAvailable;
@@ -28,7 +28,7 @@ public class Driver {
         this.completedRides = completedRides;
         this.rating = rating;
         this.isAvailable = isAvailable;
-        this.rideHistory = new RideHistory();
+        this.rideHistory = new RideHistory(null, this, dbConnect);
         Driver.dbConnect = dbConnect;
         // allDrivers.add(this);
     }
@@ -37,7 +37,7 @@ public class Driver {
         dbConnect = dbConfig;
     }
 
-    public float calculateRating() {
+    public float calculateRating() throws SQLException {
         List<Ride> pastRides = rideHistory.getRides();
         if (pastRides.isEmpty()) {
             return 5.0f;
@@ -142,7 +142,7 @@ public class Driver {
         String state = "update driver set completedRides =" + completedRides + " where driverId = " + driverId
                 + ";";
         dbConnect.statement.executeUpdate(state);
-        this.rideHistory.addRide(ride);
+        // this.rideHistory.addRide(ride);
         this.updateRating(ride.getRating());
         this.setLocation(ride.getEndLocation());
         this.setAvailable(true);

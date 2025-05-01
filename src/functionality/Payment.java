@@ -1,6 +1,7 @@
 package functionality;
 
 public class Payment {
+	int paymentId;
 	private Ride ride;
 	private User user;
 	private Card card;
