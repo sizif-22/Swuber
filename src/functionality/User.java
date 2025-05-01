@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import db.*;
 
 public class User {
-	private static int userIdCounter = 1;
+	// private static int userIdCounter = 1;
 	private int userId;
 	private String name;
 	private String email;
@@ -18,7 +18,7 @@ public class User {
 	private static DBConfig dbConnect;
 
 	public User(String name, String email, String phoneNumber, String password, DBConfig dbConnect) {
-		this.userId = userIdCounter++;
+		// this.userId = userIdCounter++;
 		this.name = name;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
@@ -28,12 +28,16 @@ public class User {
 		User.dbConnect = dbConnect;
 	}
 
-	public Ride requestRide(RidePlanner planner, String startLocation, String destination) {
+	public Ride requestRide(RidePlanner planner, String startLocation, String destination) throws SQLException {
 		Ride ride = new Ride(this, startLocation, destination);
 		Driver matchedDriver = planner.matchDriverToRide(ride);
 		if (matchedDriver != null) {
 			ride.setDriver(matchedDriver);
-			ride.setVehicle(matchedDriver.getVehicle());
+			try {
+				ride.setVehicle(matchedDriver.getVehicle());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			ride.setStatus("ACCEPTED");
 			planner.addRide(ride);
 			ride.setStatus("PENDING");
@@ -130,7 +134,6 @@ public class User {
 			System.err.println("Database connection not initialized.");
 			return;
 		}
-
 		registeredUsers.clear();
 		ResultSet resultSet = dbConnect.statement.executeQuery("select * from Users;");
 		while (resultSet.next()) {

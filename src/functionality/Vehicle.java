@@ -1,40 +1,44 @@
 package functionality;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import db.DBConfig;
+
 public class Vehicle {
+  int vehicleId;
   private String vehicleModel;
   private String color;
   private String vehicleOption;
   private String licenseNo;
   // private int maxPassengers;
   // private int currentPassengers;
+  private static DBConfig dbConnect;
 
-  public Vehicle(String vehicleModel, String color, String vehicleOption, String licenseNo) {
+  public Vehicle(String vehicleModel, String color, String vehicleOption, String licenseNo, DBConfig dbConnect) {
     this.vehicleModel = vehicleModel;
     this.color = color;
     this.vehicleOption = vehicleOption;
     this.licenseNo = licenseNo;
-    // this.maxPassengers = maxPassengers;
-    // this.currentPassengers = 0;
+    Vehicle.dbConnect = dbConnect;
   }
 
-  // public boolean canAddPassengers(int count) {
-  //   return currentPassengers + count <= maxPassengers;
-  // }
+  // public Vehicle getVehicle(int vid) throws SQLException {
+  //   try {
 
-  // public boolean addPassengers(int count) {
-  //   if (canAddPassengers(count)) {
-  //     currentPassengers += count;
-  //     return true;
+  //     String state = "select * from Vehicle where id= " + vid + " limit 1;";
+  //     ResultSet rs = dbConnect.statement.executeQuery(state);
+  //     //
+  //     return null;
+  //   } catch (SQLException e) {
+  //     System.out.println(e);
+  //     return null;
   //   }
-  //   return false;
   // }
 
-  // public void removePassengers(int count) {
-  //   currentPassengers = Math.max(0, currentPassengers - count);
-  // }
-
-//IMPORTANT NOTE:
-  // Ahmed:: THESE ARE COMMENTED OUT BECAUSE WE SHOULD HAVE A SHUTTLE VEHICLE SUBCLASS / CHILD CLASS OF THIS CLASS WHICH HAS THOSE FEATURES.
+  public static void setDBConnect(DBConfig dbConfig) {
+    dbConnect = dbConfig;
+  }
 
   public String getVehicleModel() {
     return vehicleModel;
@@ -67,20 +71,4 @@ public class Vehicle {
   public void setLicenseNo(String licenseNo) {
     this.licenseNo = licenseNo;
   }
-
-  // public int getMaxPassengers() {
-  //   return maxPassengers;
-  // }
-
-  // public void setMaxPassengers(int maxPassengers) {
-  //   this.maxPassengers = maxPassengers;
-  // }
-
-  // public int getCurrentPassengers() {
-  //   return currentPassengers;
-  // }
-
-  // public int getAvailableSeats() {
-  //   return maxPassengers - currentPassengers;
-  // }
 }

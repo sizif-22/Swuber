@@ -1,41 +1,38 @@
 create database if not exists swuber;
 use swuber;
--- SQL Schema for Ride-Sharing Application
-
 -- Users table
 CREATE TABLE Users (
-    userId VARCHAR(50) PRIMARY KEY,
+    userId int auto_increment PRIMARY KEY ,
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) unique NOT NULL,
     password VARCHAR(255) NOT NULL,
     phoneNumber VARCHAR(20),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Driver table
-CREATE TABLE Driver (
-    driverId VARCHAR(50) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    phoneNumber VARCHAR(20) NOT NULL,
-    vehicle VARCHAR(50),
-    completedRides INT DEFAULT 0,
-    rating FLOAT DEFAULT 0,
-    isAvailable BOOLEAN DEFAULT TRUE,
-    location VARCHAR(255),
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Vehicle table
 CREATE TABLE Vehicle (
-    vehicleId VARCHAR(50) PRIMARY KEY,
+    vehicleId int PRIMARY KEY auto_increment,
     vehicleModel VARCHAR(100) NOT NULL,
     color VARCHAR(50),
-    vehicleYear VARCHAR(4),
-    licensePlate VARCHAR(20) UNIQUE NOT NULL,
-    maxPassengers INT DEFAULT 4,
-    currentPassengers INT DEFAULT 0,
-    driverId VARCHAR(50),
-    FOREIGN KEY (driverId) REFERENCES Driver(driverId)
+    licenseNo VARCHAR(20) NOT NULL,
+    vehicleOption VARCHAR(10)
+--     maxPassengers INT DEFAULT 4,
+--     currentPassengers INT DEFAULT 0,
+);
+
+-- Driver table
+CREATE TABLE Driver (
+    driverId int PRIMARY KEY auto_increment,
+    name VARCHAR(100) NOT NULL,
+	location VARCHAR(255),
+    -- phoneNumber VARCHAR(20) NOT NULL,
+    vehicleId int,
+    completedRides INT DEFAULT 0,
+    rating FLOAT DEFAULT 5,
+    isAvailable BOOLEAN DEFAULT TRUE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (vehicleId) REFERENCES Vehicle(vehicleId)
 );
 
 -- Card table
@@ -45,23 +42,23 @@ CREATE TABLE Card (
     cardNumber VARCHAR(19) NOT NULL, -- 16 digits plus possible spaces
     expirationDate VARCHAR(7) NOT NULL, -- MM/YYYY
     cardHolderName VARCHAR(100) NOT NULL,
-    userId VARCHAR(50) NOT NULL,
+    userId int NOT NULL,
     FOREIGN KEY (userId) REFERENCES Users(userId)
 );
 
 -- RideHistory table
 CREATE TABLE RideHistory (
     rideHistoryId VARCHAR(50) PRIMARY KEY,
-    userId VARCHAR(50) NOT NULL,
+    userId int NOT NULL,
     FOREIGN KEY (userId) REFERENCES Users(userId)
 );
 
 -- Ride table
 CREATE TABLE Ride (
     rideId VARCHAR(50) PRIMARY KEY,
-    userId VARCHAR(50) NOT NULL,
-    driverId VARCHAR(50),
-    vehicleId VARCHAR(50),
+    userId int NOT NULL,
+    driverId int,
+    vehicleId int,
     startLocation VARCHAR(255) NOT NULL,
     endLocation VARCHAR(255) NOT NULL,
     cost DECIMAL(10, 2) NOT NULL,
@@ -88,7 +85,7 @@ CREATE TABLE RideHistoryRides (
 CREATE TABLE Payment (
     paymentId VARCHAR(50) PRIMARY KEY,
     rideId VARCHAR(50) NOT NULL,
-    userId VARCHAR(50) NOT NULL,
+    userId int NOT NULL,
     cardId VARCHAR(50),
     cost DECIMAL(10, 2) NOT NULL,
     discountCode VARCHAR(50),
@@ -105,19 +102,19 @@ ADD CONSTRAINT fk_payment
 FOREIGN KEY (paymentId) REFERENCES Payment(paymentId);
 
 -- RidePlanner table
-CREATE TABLE RidePlanner (
-    ridePlannerId VARCHAR(50) PRIMARY KEY,
-    activeRides VARCHAR(50) REFERENCES Ride(rideId),
-    activeDrivers VARCHAR(50) REFERENCES Driver(driverId),
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- CREATE TABLE RidePlanner (
+--     ridePlannerId VARCHAR(50) PRIMARY KEY,
+--     activeRides VARCHAR(50) REFERENCES Ride(rideId),
+--     activeDrivers int REFERENCES Driver(driverId),
+--     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
 
 -- Service for calculating and assigning drivers to rides
 CREATE TABLE DriverAssignment (
     assignmentId VARCHAR(50) PRIMARY KEY,
     ridePlannerId VARCHAR(50) NOT NULL,
     rideId VARCHAR(50) NOT NULL,
-    driverId VARCHAR(50) NOT NULL,
+    driverId int NOT NULL,
     scheduledPickupLocation VARCHAR(255) NOT NULL,
     estimatedArrivalTime TIMESTAMP,
     isCompleted BOOLEAN DEFAULT FALSE,
@@ -141,7 +138,7 @@ CREATE TABLE ShuttleRide (
 -- ShuttleRide_Passengers junction table
 CREATE TABLE ShuttleRide_Passengers (
     shuttleRideId VARCHAR(50) NOT NULL,
-    userId VARCHAR(50) NOT NULL,
+    userId int NOT NULL,
     pickupLocation VARCHAR(255) NOT NULL,
     dropoffLocation VARCHAR(255) NOT NULL,
     PRIMARY KEY (shuttleRideId, userId),

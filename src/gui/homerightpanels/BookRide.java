@@ -2,6 +2,8 @@ package gui.homerightpanels;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
+
 import functionality.*;
 import javax.swing.*;
 import gui.Frame;
@@ -18,7 +20,7 @@ public class BookRide extends JPanel {
 		System.out.println("Drivers in System: " + Driver.getAllDrivers().size());
 
 		setBounds(300, 0, 900, 800);
-		setBackground(new Color(55,55,55));
+		setBackground(new Color(55, 55, 55));
 		setLayout(null);
 
 		// title Label
@@ -73,31 +75,40 @@ public class BookRide extends JPanel {
 					return;
 				}
 
-				// creating ride obj 
+				// creating ride obj
 				Ride ride = new Ride(user, pickupLocation, destination);
 
 				// Call RidePlanner to match a driver
-				Driver matchedDriver = Frame.planner.matchDriverToRide(ride);
-				if (matchedDriver != null) {
-					JOptionPane.showMessageDialog(BookRide.this, "Driver found!");
+				Driver matchedDriver;
+				try {
+					matchedDriver = Frame.planner.matchDriverToRide(ride);
+					if (matchedDriver != null) {
+						JOptionPane.showMessageDialog(BookRide.this, "Driver found!");
 
-					try {
+						try {
+							JOptionPane.showMessageDialog(BookRide.this,
+									"Ride in Progress! Your Driver: " + ride.getDriver().getName()
+											+ " Heading to: "
+											+ ride.getEndLocation() + " In a "
+											+ ride.getDriver().getVehicleInfo());
+
+							Thread.sleep(5000); // 5 Second Ride Sim : ak
+						} catch (InterruptedException ex) {
+							ex.printStackTrace();
+						}
+
+						// After simulated wait time, show payment panel ( i wanted to do a spinny
+						// loader :( )
+						frame.gotoPaymentPanel(user, ride);
+					} else {
+						// no driver found, show error message
 						JOptionPane.showMessageDialog(BookRide.this,
-								"Ride in Progress! Your Driver: " + ride.getDriver().getName() + " Heading to: "
-										+ ride.getEndLocation() + " In a " + ride.getDriver().getVehicleInfo());
-
-						Thread.sleep(5000); // 5 Second Ride Sim : ak
-					} catch (InterruptedException ex) {
-						ex.printStackTrace();
+								"No driver available at this time. Please try again later.");
 					}
-
-					// After simulated wait time, show payment panel ( i wanted to do a spinny loader :( )
-					frame.gotoPaymentPanel(user, ride);
-				} else {
-					// no driver found, show error message
-					JOptionPane.showMessageDialog(BookRide.this,
-							"No driver available at this time. Please try again later.");
+				} catch (SQLException e1) {
+					e1.printStackTrace();
 				}
+
 			}
 		});
 	}

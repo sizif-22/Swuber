@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import functionality.*;
 
@@ -79,6 +80,8 @@ public class RideCompletedPanel extends JPanel {
         } catch (ClassCastException ex) {
           JOptionPane.showMessageDialog(null, "Invalid rating format. Please enter a number.", "Invalid Rating",
               JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e1) {
+          e1.printStackTrace();
         }
       }
     });

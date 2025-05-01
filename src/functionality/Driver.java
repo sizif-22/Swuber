@@ -1,41 +1,55 @@
 package functionality;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import db.DBConfig;
+
 public class Driver {
+    int driverId;
     private String name;
     private String location;
     private RideHistory rideHistory;
     private int completedRides;
-    private Vehicle vehicle;
+    // private Vehicle vehicle;
+    private int vehicleId;
     private static List<Driver> allDrivers = new ArrayList<>();
     private float rating;
     private boolean isAvailable;
+    private static DBConfig dbConnect;
 
-    public Driver(String name, String location, Vehicle vehicle) {
+    public Driver(String name, String location, int vehicleId, int completedRides, float rating, Boolean isAvailable,
+            DBConfig dbConnect) throws SQLException {
         this.name = name;
         this.location = location;
-        this.vehicle = vehicle;
+        this.vehicleId = vehicleId;
+        // this.vehicle = getVehicle();
         this.completedRides = 0;
-        this.rating = 5.0f; 
+        this.rating = 5.0f;
         this.isAvailable = true;
         this.rideHistory = new RideHistory();
-        allDrivers.add(this);
+        Driver.dbConnect = dbConnect;
+        // allDrivers.add(this);
+    }
+
+    public static void setDBConnect(DBConfig dbConfig) {
+        dbConnect = dbConfig;
     }
 
     public float calculateRating() {
-        List<Ride> pastRides = rideHistory.getRides(); 
+        List<Ride> pastRides = rideHistory.getRides();
         if (pastRides.isEmpty()) {
-            return 5.0f; 
+            return 5.0f;
         }
 
         float totalRating = 0;
         int ratedRides = 0;
 
         for (Ride ride : pastRides) {
-            float rideRating = ride.getRating(); 
-            if (rideRating >= 0) { 
+            float rideRating = ride.getRating();
+            if (rideRating >= 0) {
                 totalRating += rideRating;
                 ratedRides++;
             }
@@ -60,26 +74,44 @@ public class Driver {
     public static List<Driver> getAllDrivers() {
         return allDrivers;
     }
-
     public RideHistory getRideHistory() {
         return rideHistory;
     }
+    public Vehicle getVehicle() throws SQLException {
+        System.out.println("vid : " + vehicleId);
+        String state = "select * from Vehicle where vehicleId=" + vehicleId + " limit 1;";
+        System.out.println(state);
+        ResultSet resultSet = dbConnect.statement.executeQuery(state);
 
-    public Vehicle getVehicle() {
-        return vehicle;
+        // Add this line to move to the first row in the result set
+        if (resultSet.next()) {
+            String color = resultSet.getString("color");
+            String ln = resultSet.getString("licenseNo");
+            String vm = resultSet.getString("vehicleModel");
+            String vo = resultSet.getString("vehicleOption");
+            Vehicle vehicle = new Vehicle(vm, color, vo, ln, dbConnect);
+            return vehicle;
+        } else {
+            // Handle the case when no vehicle with the given ID is found
+            throw new SQLException("No vehicle found with ID: " + vehicleId);
+        }
     }
-    public String getVehicleInfo(){
-        return vehicle.getColor() +" " + vehicle.getVehicleModel() +" "+ "License Plate: " + vehicle.getLicenseNo();
+    public String getVehicleInfo() throws SQLException {
+        Vehicle vehicle = getVehicle();
+        return vehicle.getColor() + " " + vehicle.getVehicleModel() + " " + "License Plate: " + vehicle.getLicenseNo();
     }
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
+
+    // public void setVehicle(Vehicle vehicle) {
+    //     this.vehicle = vehicle;
+    // }
 
     public boolean isAvailable() {
         return isAvailable;
     }
 
-    public void setAvailable(boolean available) {
+    public void setAvailable(boolean available) throws SQLException {
+        String state = "update driver set isAvailable =" + available + ";";
+        dbConnect.statement.executeUpdate(state);
         isAvailable = available;
     }
 
@@ -93,7 +125,7 @@ public class Driver {
         }
     }
 
-    public void markRideAsComplete(Ride ride) {
+    public void markRideAsComplete(Ride ride) throws SQLException {
         if (ride != null && ride.getStatus().equals("PAID")) {
             this.completedRides++;
             this.rideHistory.addRide(ride);
