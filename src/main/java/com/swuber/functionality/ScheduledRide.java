@@ -49,11 +49,9 @@ public class ScheduledRide {
           EntityManager em = dbConnect.getEntityManager();
           em.getTransaction().begin();
           try {
-               // First, merge the existing entities to ensure they are managed
                shuttleRide = em.merge(shuttleRide);
                user = em.merge(user);
 
-               // Create and persist the ScheduledRide with managed entities
                ScheduledRide sr = new ScheduledRide(shuttleRide, user);
                em.persist(sr);
 
@@ -72,9 +70,41 @@ public class ScheduledRide {
                System.out.println("Error adding scheduled ride: " + e.getMessage());
                e.printStackTrace();
           } finally {
-               // It's a good practice to close the EntityManager if it's not container-managed
-               // If you're using a container-managed EntityManager, you might want to remove
-               // this
+
+               if (em != null && em.isOpen()) {
+                    em.close();
+               }
+          }
+     }
+
+     public static boolean deleteScheduledRide(int rideId, int userId) {
+          EntityManager em = dbConnect.getEntityManager();
+          em.getTransaction().begin();
+          try {
+               // Create the composite key
+               ScheduledRideId scheduleId = new ScheduledRideId(rideId, userId);
+
+               // Find the scheduled ride using the composite key
+               ScheduledRide scheduledRide = em.find(ScheduledRide.class, scheduleId);
+
+               if (scheduledRide != null) {
+                    em.remove(scheduledRide);
+                    em.getTransaction().commit();
+                    System.out.println("Scheduled ride deleted successfully");
+                    return true;
+               } else {
+                    System.out.println("No scheduled ride found for user " + userId + " and ride " + rideId);
+                    em.getTransaction().rollback();
+                    return false;
+               }
+          } catch (Exception e) {
+               if (em.getTransaction().isActive()) {
+                    em.getTransaction().rollback();
+               }
+               System.out.println("Error deleting scheduled ride: " + e.getMessage());
+               e.printStackTrace();
+               return false;
+          } finally {
                if (em != null && em.isOpen()) {
                     em.close();
                }

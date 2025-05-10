@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import com.swuber.functionality.ScheduledRide;
 
 import com.swuber.functionality.*;
 import com.swuber.gui.Frame;
@@ -62,7 +63,7 @@ public class BookRideCard extends JPanel {
 		// Create the appropriate button based on whether the ride is already scheduled
 		JButton bookBtn;
 		if (isScheduled) {
-			bookBtn = new JButton("Booked");
+			bookBtn = new JButton("UnBook");
 			bookBtn.setBounds(600, 50, 150, 50);
 			bookBtn.setBackground(new Color(50, 50, 50));
 			bookBtn.setFocusPainted(false);
@@ -70,6 +71,17 @@ public class BookRideCard extends JPanel {
 			bookBtn.setForeground(Color.white);
 			bookBtn.setBorder(null);
 			add(bookBtn);
+			bookBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ScheduledRide.deleteScheduledRide(rideId, user.getUserId());
+					try {
+						frame.gotoSwuberShuttlePanel(user);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
 		} else {
 			bookBtn = new JButton("Book Now");
 			bookBtn.setBounds(600, 50, 150, 50);
