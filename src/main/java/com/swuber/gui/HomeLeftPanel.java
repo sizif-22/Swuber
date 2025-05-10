@@ -40,7 +40,7 @@ public class HomeLeftPanel extends JPanel {
         configureButton(createButton("Ride History", 340), e -> {
             try {
                 mainFrame.gotoRideHistoryPanel(currentUser);
-            } catch (SQLException e1) {
+            } catch (Exception e1) {
                 e1.printStackTrace();
             }
         });

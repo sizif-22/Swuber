@@ -201,6 +201,7 @@ public class User {
 
 			em.getTransaction().commit();
 			System.out.println("Card added successfully: " + newCard.getCard());
+			savedPaymentOptions = Card.getCards(this);
 		} catch (Exception e) {
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
@@ -243,7 +244,8 @@ public class User {
 	// return Collections.unmodifiableSet(new HashSet<>(savedPaymentOptions));
 	// }
 	public List<Card> getCards() {
-		return Card.getCards(this);
+		savedPaymentOptions = Card.getCards(this);
+		return savedPaymentOptions;
 	}
 
 	public static void register(String name, String email, String phoneNumber, String password) {

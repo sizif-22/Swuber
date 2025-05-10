@@ -4,10 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.text.NumberFormat;
 import com.swuber.functionality.*;
 import com.swuber.db.DatabaseConfig;
+import com.swuber.gui.Frame;
 
 public class RideCompletedPanel extends JPanel {
 
@@ -16,12 +16,14 @@ public class RideCompletedPanel extends JPanel {
   private JFormattedTextField tf;
   private User user;
   private DatabaseConfig dbConnect;
+  private Frame frame;
 
-  public RideCompletedPanel(User user, Ride ride, Driver driver , DatabaseConfig dbConnect) {
+  public RideCompletedPanel(Frame frame, User user, Ride ride, Driver driver, DatabaseConfig dbConnect) {
     this.ride = ride;
     this.driver = driver;
     this.user = user;
     this.dbConnect = dbConnect; // Get a singleton instance of DBConfig
+    this.frame = frame;
 
     setBounds(300, 0, 900, 800);
     setBackground(new Color(55, 55, 55));
@@ -73,19 +75,13 @@ public class RideCompletedPanel extends JPanel {
             return; // Stop further execution
           }
           ride.completeRide();
-          System.out.println("1 done");
           ride.rateRide(rating, driver);
-          System.out.println("2 done");
+
           driver.markRideAsComplete(ride);
-          System.out.println("3 done");
-          
-          // Set the DBConfig instance for RideHistory before adding the ride
-          // RideHistory.setDBConnect(dbConnect);
-          // RideHistory.addRide(ride);
-          
-          System.out.println("4 done");
+
           JOptionPane.showMessageDialog(null, "Driver rating submitted successfully!",
               "Rating Submitted", JOptionPane.INFORMATION_MESSAGE);
+          frame.gotoRideHistoryPanel(user);
         } catch (NullPointerException ex) {
           ex.printStackTrace(); // Add this for better debugging
           JOptionPane.showMessageDialog(null, "Please enter a rating.", "Invalid Rating", JOptionPane.ERROR_MESSAGE);
@@ -93,7 +89,7 @@ public class RideCompletedPanel extends JPanel {
           ex.printStackTrace(); // Add this for better debugging
           JOptionPane.showMessageDialog(null, "Invalid rating format. Please enter a number.", "Invalid Rating",
               JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e1) {
+        } catch (Exception e1) {
           e1.printStackTrace();
           System.out.println(e1);
         }

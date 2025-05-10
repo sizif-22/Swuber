@@ -84,12 +84,9 @@ public class Ride {
 		this.status = STATUS_COMPLETED;
 	}
 
-	public void rateRide(float rating, Driver driver) throws SQLException {
-		if (rating >= 0.0f && rating <= 5.0f) {
-			this.rating = rating;
-
-		}
-
+	public void rateRide(float rating, Driver driver) {
+		setRating(rating);
+		setVehicle(driver.getVehicle());
 	}
 
 	public float getRating() {

@@ -141,11 +141,11 @@ public class PaymentPanel extends JPanel {
     public void refreshCards() throws SQLException {
         cardsPanel.removeAll();
         int counter = 0;
-        
+
         // Fix for ClassCastException: Convert the Collection to a List safely
         Collection<?> cardsCollection = user.getCards();
         List<Card> userCards = new ArrayList<>();
-        
+
         // Safely convert the collection to a List of Cards
         if (cardsCollection != null) {
             for (Object obj : cardsCollection) {
@@ -154,13 +154,13 @@ public class PaymentPanel extends JPanel {
                 }
             }
         }
-        
+
         for (int i = 0; i < Math.min(userCards.size(), 2); i++) {
             Card card = userCards.get(i);
             cardsPanel.add(new PaymentCard(frame, user, card.getCardName(), card.getCardL4Numbers(), ride, sRide, i));
             counter++;
         }
-        
+
         cardsPanel.revalidate();
         cardsPanel.repaint();
         System.out.println("counter is : " + counter);

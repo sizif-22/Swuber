@@ -18,7 +18,7 @@ public class Frame extends JFrame {
     // public static RidePlanner planner;
     public DatabaseConfig db = new DatabaseConfig();
 
-    public Frame() throws SQLException {
+    public Frame() {
         // Initialize the database connection in User class
         User.setODBManager(db);
         Vehicle.setDBConnect(db);
@@ -51,34 +51,6 @@ public class Frame extends JFrame {
 
         setVisible(true);
 
-        // Vehicle vehicle1 = new Vehicle("Toyota Corolla", "Black", "Comfort", "ABC123"
-        // ,db);
-        // Vehicle vehicle2 = new Vehicle("Honda Civic", "White", "Comfort", "XYZ789"
-        // ,db);
-        // Vehicle vehicle3 = new Vehicle("Tesla Model 3", "Red", "Premium",
-        // "TSL456",db);
-
-        // Driver driver1 = new Driver("Ahmed", "shobra", vehicle1);
-        // Driver driver2 = new Driver("Sherif", "shobra", vehicle2);
-        // Driver driver3 = new Driver("Mohamed", "el Salam", vehicle3);
-        // Driver driver4 = new Driver("Nour", "el Salam", vehicle1);
-        // Driver driver5 = new Driver("Seif", "imbaba", vehicle2);
-        // Driver driver6 = new Driver("AbdelRahman", "downtown", vehicle3);
-        // Driver driver7 = new Driver("Yosef", "october", vehicle1);
-        // Driver driver8 = new Driver("Yousry", "zayed", vehicle2);
-        // Driver driver9 = new Driver("Amir", "zamalek", vehicle3);
-
-        // planner.addDriver(driver1);
-        // planner.addDriver(driver2);
-        // planner.addDriver(driver3);
-        // planner.addDriver(driver4);
-        // planner.addDriver(driver5);
-        // planner.addDriver(driver6);
-        // planner.addDriver(driver7);
-        // planner.addDriver(driver8);
-        // planner.addDriver(driver9);
-        // planner.loadDriversFromDB();
-
     }
 
     public void setPanel(JPanel panel) {
@@ -107,7 +79,7 @@ public class Frame extends JFrame {
     }
 
     public void gotoRideCompletedPanel(User user, Ride ride, Driver driver) {
-        setPanel(new RideCompletedPanel(user, ride, driver, db));
+        setPanel(new RideCompletedPanel(this, user, ride, driver, db));
     }
 
     public void gotoBookRidePanel(User user) {
@@ -122,7 +94,7 @@ public class Frame extends JFrame {
         setPanel(new BookedShuttleBuses(this, user));
     }
 
-    public void gotoRideHistoryPanel(User user) throws SQLException {
+    public void gotoRideHistoryPanel(User user) {
         setPanel(new PreviousRides(this, user));
     }
 
@@ -130,7 +102,7 @@ public class Frame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             try {
                 new Frame();
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
